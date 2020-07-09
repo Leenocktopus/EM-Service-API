@@ -1,0 +1,27 @@
+package com.leandoer.entity.dto;
+
+import com.leandoer.entity.Category;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class CategoryDto {
+    private long id;
+    private String name;
+
+    public CategoryDto(Category category) {
+        this.id = category.getId();
+        this.name = category.getName();
+    }
+
+    public Category toCategory(){
+        Category category = new Category();
+        category.setId(this.id);
+        category.setName(this.name);
+        return category;
+    }
+}
