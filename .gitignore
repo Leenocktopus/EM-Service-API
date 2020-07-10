@@ -2,4 +2,3 @@
 /target
 src/main/resources/static/images
 *.iml
-*.sql

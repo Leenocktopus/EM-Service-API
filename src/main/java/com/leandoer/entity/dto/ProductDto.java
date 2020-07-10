@@ -1,21 +1,27 @@
 package com.leandoer.entity.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.leandoer.entity.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductDto {
     private long productId;
     private String name;
-    private ManufacturerDto manufacturer;
-    private CategoryDto category;
+    // Default values added to reduce the number of data needed to create an Order com.leandoer.entity.Order
+    // Since each product could be uniquely identified by its id, there is no need to pass any additional info
+    private ManufacturerDto manufacturer = new ManufacturerDto();
+    private CategoryDto category = new CategoryDto();
     private BigDecimal price;
     private int amountInStock;
     private String descr;
@@ -38,7 +44,7 @@ public class ProductDto {
         Product product = new Product();
         product.setProductId(this.productId);
         product.setName(this.name);
-        product.setManufacturer(this.manufacturer.toManufcaturer());
+        product.setManufacturer(this.manufacturer.toManufacturer());
         product.setCategory(this.category.toCategory());
         product.setPrice(this.price);
         product.setAmountInStock(this.amountInStock);

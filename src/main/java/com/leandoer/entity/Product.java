@@ -4,21 +4,25 @@ package com.leandoer.entity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "products")
 @Setter
 @Getter
+@ToString
 public class Product {
 
     @Id
     @Column(name = "prod_id")
-    private String productId;
+    private long productId;
 
     @Column(name = "product_name")
     private String name;
@@ -40,8 +44,11 @@ public class Product {
     @Column(name = "descr")
     private String descr;
 
+    @Column(name = "popularity")
+    private int popularity;
     @Column(name = "total_score")
     private float totalScore;
+
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<ProductAttribute> productAttributes = new HashSet<>();
@@ -49,6 +56,6 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private Set<ProductComment> productComments = new HashSet<>();
 
-    @OneToMany(mappedBy = "product")
-    private Set<OrderProduct> orders = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderProduct> orders = new ArrayList<>();
 }

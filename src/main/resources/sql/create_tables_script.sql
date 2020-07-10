@@ -48,16 +48,15 @@ CREATE TABLE orders
 
 CREATE TABLE order_product
 (
-    id bigint NOT NULL AUTO_INCREMENT,
-    quantity int,
     order_id bigint NOT NULL,
     prod_id  bigint NOT NULL,
-    PRIMARY KEY (id)
+    quantity int,
+    PRIMARY KEY (order_id, prod_id)
 );
 
 CREATE TABLE product_comments
 (
-    comment_id   bigint,
+    comment_id   bigint auto_increment,
     prod_id      bigint,
     user         char(20),
     score        ENUM ('AWFUL', 'BAD', 'GOOD_ENOUGH', 'GOOD', 'BEST'),
@@ -92,23 +91,44 @@ ALTER TABLE order_product
     ADD CONSTRAINT order_product_order_fk
         FOREIGN KEY (order_id) REFERENCES orders (order_id);
 
-CREATE trigger average_score
+CREATE trigger average_score_insert
     AFTER INSERT
     ON product_comments
     FOR EACH ROW
     update products
-    set total_score=(SELECT avg(score)
+    set total_score=(SELECT avg(score+0)
                      from product_comments
                      where product_comments.prod_id = products.prod_id)
     where prod_id = NEW.prod_id;
 
-CREATE trigger popularity
+CREATE trigger average_score_update
+    AFTER UPDATE
+    ON product_comments
+    FOR EACH ROW
+    update products
+    set total_score=(SELECT avg(score+0)
+                     from product_comments
+                     where product_comments.prod_id = products.prod_id)
+    where prod_id = NEW.prod_id;
+
+
+CREATE trigger popularity_insert
     AFTER INSERT
     ON order_product
     FOR EACH ROW
     update products
-    set popularity=((SELECT popularity
-                     from products
-                     where prod_id = NEW.prod_id) + 1);
+    set popularity=(SELECT sum(quantity)
+                     from order_product
+                     where prod_id = NEW.prod_id)
+    where prod_id = NEW.prod_id;
 
+CREATE trigger popularity_update
+    AFTER UPDATE
+    ON order_product
+    FOR EACH ROW
+    update products
+    set popularity=(SELECT sum(quantity)
+                    from order_product
+                    where prod_id = NEW.prod_id)
+    where prod_id = NEW.prod_id;
 

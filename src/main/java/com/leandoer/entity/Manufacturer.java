@@ -4,6 +4,7 @@ package com.leandoer.entity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Table(name = "manufacturers")
 @Setter
 @Getter
+@ToString
 public class Manufacturer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

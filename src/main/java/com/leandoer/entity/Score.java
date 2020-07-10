@@ -16,6 +16,4 @@ public enum Score {
     public int getNumericValue() {
         return numericValue;
     }
-
-
 }

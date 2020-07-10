@@ -1,5 +1,6 @@
 package com.leandoer.entity.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.leandoer.entity.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CategoryDto {
     private long id;
     private String name;
