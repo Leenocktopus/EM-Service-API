@@ -1,12 +1,20 @@
 package com.leandoer.service;
 
 import com.leandoer.entity.Order;
+import com.leandoer.entity.dto.OrderDto;
 
 import java.util.List;
 
 public interface OrderService {
 
-    List<Order> getOrders();
 
-    void addOrder(Order order);
+    List<OrderDto> getAllOrders();
+
+    OrderDto addOrder(OrderDto order);
+
+    OrderDto getOneOrder(long id);
+
+    OrderDto modifyOrder(long id, OrderDto orderDto);
+
+    OrderDto deleteOrder(long id);
 }

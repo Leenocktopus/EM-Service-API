@@ -1,9 +1,13 @@
 package com.leandoer.repository;
 
-import com.leandoer.entity.Category;
+import com.leandoer.entity.Category;;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    boolean existsById(Category category);
+    Optional<Category> findByName(String name);
+
+    boolean existsByName(String name);
 }
