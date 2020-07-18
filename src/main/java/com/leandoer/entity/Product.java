@@ -18,11 +18,7 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-public class Product {
-
-    @Id
-    @Column(name = "prod_id")
-    private long productId;
+public class Product extends BaseEntity{
 
     @Column(name = "product_name")
     private String name;

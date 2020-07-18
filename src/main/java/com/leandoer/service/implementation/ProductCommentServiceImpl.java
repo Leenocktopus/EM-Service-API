@@ -24,16 +24,16 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 
     @Override
     public List<ProductCommentDto> getAllProductComments(long productId) {
-        return productCommentRepository.findAllByProductProductId(productId).stream().map(ProductCommentDto::new).collect(Collectors.toList());
+        return productCommentRepository.findAllByProductId(productId).stream().map(ProductCommentDto::new).collect(Collectors.toList());
     }
 
     @Override
     public ProductCommentDto addProductComment(long productId, ProductCommentDto comment) {
-        if (productCommentRepository.existsById(comment.getCommentId())){
+        if (productCommentRepository.existsById(comment.getId())){
             throw new RuntimeException();
         }
         Product id = new Product();
-        id.setProductId(productId);
+        id.setId(productId);
         ProductComment entity = comment.toProductComment();
         entity.setProduct(id);
         productCommentRepository.save(entity);
@@ -42,7 +42,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 
     @Override
     public ProductCommentDto getProductComment(long productId, long commentId) {
-        return new ProductCommentDto(productCommentRepository.findByCommentIdAndProductProductId(commentId, productId)
+        return new ProductCommentDto(productCommentRepository.findByIdAndProductId(commentId, productId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Comment with id: "+commentId+" was not found for product with id: "+productId
                 )));
@@ -50,15 +50,15 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 
     @Override
     public ProductCommentDto modifyProductComment(long productId, long commentId, ProductCommentDto comment) {
-        ProductComment selected = productCommentRepository.findByCommentIdAndProductProductId(commentId, productId)
+        ProductComment selected = productCommentRepository.findByIdAndProductId(commentId, productId)
                 .orElse(new ProductComment());
-        System.out.println(selected.getCommentId());
+        System.out.println(selected.getId());
         selected.setUser(comment.getUser());
         selected.setText(comment.getText());
         selected.setScore(comment.getScore());
         selected.setDate(comment.getDate());
         Product id = new Product();
-        id.setProductId(productId);
+        id.setId(productId);
         selected.setProduct(id);
         productCommentRepository.save(selected);
         return new ProductCommentDto(selected);
@@ -66,7 +66,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 
     @Override
     public ProductCommentDto deleteProductComment(long productId, long commentId) {
-        ProductComment selected = productCommentRepository.findByCommentIdAndProductProductId(commentId, productId)
+        ProductComment selected = productCommentRepository.findByIdAndProductId(commentId, productId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Comment with id: "+commentId+" was not found for product with id: "+productId
                 ));

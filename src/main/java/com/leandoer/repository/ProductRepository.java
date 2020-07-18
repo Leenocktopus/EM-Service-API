@@ -21,7 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAll();
 
     @Override
-    @Query("select p from Product p join fetch p.manufacturer join fetch p.category where p.productId =:id")
+    @Query("select p from Product p join fetch p.manufacturer join fetch p.category where p.id =:id")
     Optional<Product> findById(@Param("id") Long id);
 
 }

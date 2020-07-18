@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto addOrder(OrderDto order) {
-        if (orderRepository.existsById(order.getOrderId())){
+        if (orderRepository.existsById(order.getId())){
             throw new RuntimeException();
         }
         orderRepository.save(order.toOrder());

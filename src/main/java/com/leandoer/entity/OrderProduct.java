@@ -34,6 +34,6 @@ public class OrderProduct {
         this.product = product;
         this.order = order;
         this.quantity = quantity;
-        this.id = new OrderProductId(product.getProductId(), order.getOrderId());
+        this.id = new OrderProductId(product.getId(), order.getId());
     }
 }

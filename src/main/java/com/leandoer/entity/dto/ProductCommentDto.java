@@ -1,15 +1,12 @@
 package com.leandoer.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.leandoer.entity.Product;
 import com.leandoer.entity.ProductComment;
 import com.leandoer.entity.Score;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Getter
@@ -18,14 +15,14 @@ import java.sql.Timestamp;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductCommentDto {
 
-    private long commentId;
+    private long id;
     private String user;
     private Score score;
     private String text;
     private Timestamp date;
 
     public ProductCommentDto(ProductComment productComment) {
-        this.commentId = productComment.getCommentId();
+        this.id = productComment.getId();
         this.user = productComment.getUser();
         this.score = productComment.getScore();
         this.text = productComment.getText();
@@ -34,7 +31,7 @@ public class ProductCommentDto {
 
     public ProductComment toProductComment(){
         ProductComment productComment = new ProductComment();
-        productComment.setCommentId(commentId);
+        productComment.setId(id);
         productComment.setUser(user);
         productComment.setScore(score);
         productComment.setText(text);

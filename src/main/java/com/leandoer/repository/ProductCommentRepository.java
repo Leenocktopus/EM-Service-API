@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ProductCommentRepository extends JpaRepository<ProductComment, Long> {
 
-    List<ProductComment> findAllByProductProductId(long id);
+    List<ProductComment> findAllByProductId(long id);
 
-    Optional<ProductComment> findByCommentIdAndProductProductId(long commentId, long productId);
+    Optional<ProductComment> findByIdAndProductId(long commentId, long productId);
 }

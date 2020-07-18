@@ -17,12 +17,9 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-@EqualsAndHashCode
-public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
-    private long orderId;
+@EqualsAndHashCode(callSuper = true)
+public class Order extends BaseEntity{
+
 
     @Column(name = "cust_name")
     private String customerName;

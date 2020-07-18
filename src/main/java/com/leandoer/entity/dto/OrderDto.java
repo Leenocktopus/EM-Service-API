@@ -2,14 +2,11 @@ package com.leandoer.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.leandoer.entity.Order;
-import com.leandoer.entity.OrderProduct;
 import com.leandoer.entity.OrderStatus;
-import com.leandoer.entity.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +16,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDto {
-    private long orderId;
+    private long id;
     private String customerName;
     private String customerPhone;
     private String customerEmail;
@@ -29,7 +26,7 @@ public class OrderDto {
     private List<OrderProductDto> products;
 
     public OrderDto(Order order) {
-        this.orderId = order.getOrderId();
+        this.id = order.getId();
         this.customerName = order.getCustomerName();
         this.customerPhone = order.getCustomerPhone();
         this.customerEmail = order.getCustomerEmail();
@@ -42,7 +39,7 @@ public class OrderDto {
 
     public Order toOrder(){
         Order order = new Order();
-        order.setOrderId(this.orderId);
+        order.setId(this.id);
         order.setCustomerName(this.customerName);
         order.setCustomerPhone(this.customerPhone);
         order.setCustomerEmail(this.customerEmail);

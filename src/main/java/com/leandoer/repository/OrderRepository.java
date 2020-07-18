@@ -14,6 +14,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAll();
 
     @Override
-    @Query("select distinct o from Order o join fetch o.products op join fetch op.product opp join fetch opp.manufacturer join fetch opp.category where o.orderId =:id")
+    @Query("select distinct o from Order o join fetch o.products op join fetch op.product opp join fetch opp.manufacturer join fetch opp.category where o.id =:id")
     Optional<Order> findById(@Param("id") Long id);
 }

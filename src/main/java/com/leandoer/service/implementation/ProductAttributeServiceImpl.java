@@ -23,7 +23,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
     @Override
     public List<ProductAttributeDto> getAllProductAttributes(long productId) {
-        return productAttributeRepository.findAllByProductProductId(productId).stream()
+        return productAttributeRepository.findAllByProductId(productId).stream()
                 .map(ProductAttributeDto::new)
                 .collect(Collectors.toList());
     }
@@ -34,7 +34,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
             throw new RuntimeException();
         }
         Product id = new Product();
-        id.setProductId(productId);
+        id.setId(productId);
         ProductAttribute entity = attribute.toProductAttribute();
         entity.setProduct(id);
         productAttributeRepository.save(entity);
@@ -43,7 +43,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
     @Override
     public ProductAttributeDto getProductAttribute(long productId, long attributeId) {
-        return new ProductAttributeDto(productAttributeRepository.findByIdAndProductProductId(attributeId, productId)
+        return new ProductAttributeDto(productAttributeRepository.findByIdAndProductId(attributeId, productId)
                 .orElseThrow(
                         () -> new EntityNotFoundException("Attribute with id: "+attributeId+" was not found for product with id: "+productId)
         ));
@@ -53,10 +53,10 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
     @Override
     public ProductAttributeDto modifyProductAttribute(long productId, long attributeId, ProductAttributeDto attribute) {
-        ProductAttribute selected = productAttributeRepository.findByIdAndProductProductId(attributeId, productId)
+        ProductAttribute selected = productAttributeRepository.findByIdAndProductId(attributeId, productId)
                 .orElse(new ProductAttribute());
         Product id = new Product();
-        id.setProductId(productId);
+        id.setId(productId);
         selected.setProduct(id);
         selected.setName(attribute.getName());
         selected.setValue(attribute.getValue());
@@ -66,7 +66,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
     @Override
     public ProductAttributeDto deleteProductAttribute(long productId, long attributeId) {
-        ProductAttribute productAttribute = productAttributeRepository.findByIdAndProductProductId(attributeId, productId)
+        ProductAttribute productAttribute = productAttributeRepository.findByIdAndProductId(attributeId, productId)
                 .orElseThrow(
                         () -> new EntityNotFoundException("Attribute with id: "+attributeId+" was not found for product with id: "+productId)
                 );

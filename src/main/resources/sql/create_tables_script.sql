@@ -1,6 +1,6 @@
 CREATE TABLE products
 (
-    prod_id       bigint     NOT NULL,
+    id       bigint     NOT NULL,
     product_name  varchar(100),
     manuf_id      bigint NOT NULL,
     cat_id        bigint NOT NULL,
@@ -9,21 +9,21 @@ CREATE TABLE products
     descr         varchar(300),
     popularity    int(11),
     total_score int(11),
-    CONSTRAINT PRIMARY KEY (prod_id)
+    CONSTRAINT PRIMARY KEY (id)
 );
 
 CREATE TABLE manufacturers
 (
-    manuf_id bigint NOT NULL AUTO_INCREMENT,
+    id bigint NOT NULL AUTO_INCREMENT,
     name     varchar(30) UNIQUE,
-    CONSTRAINT PRIMARY KEY (manuf_id)
+    CONSTRAINT PRIMARY KEY (id)
 );
 
 CREATE TABLE categories
 (
-    cat_id bigint NOT NULL AUTO_INCREMENT,
+    id bigint NOT NULL AUTO_INCREMENT,
     name   varchar(30) UNIQUE,
-    CONSTRAINT PRIMARY KEY (cat_id)
+    CONSTRAINT PRIMARY KEY (id)
 );
 
 CREATE TABLE product_attributes
@@ -37,13 +37,13 @@ CREATE TABLE product_attributes
 
 CREATE TABLE orders
 (
-    order_id     bigint NOT NULL AUTO_INCREMENT,
+    id     bigint NOT NULL AUTO_INCREMENT,
     cust_name    varchar(20),
     cust_phone   varchar(20),
     cust_email   varchar(35),
     order_date   timestamp,
     order_status ENUM ('PENDING', 'COMPLETED', 'CANCELLED') DEFAULT 'PENDING',
-    PRIMARY KEY (order_id)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE order_product
@@ -56,40 +56,41 @@ CREATE TABLE order_product
 
 CREATE TABLE product_comments
 (
-    comment_id   bigint auto_increment,
+    id   bigint auto_increment,
     prod_id      bigint,
     user         char(20),
     score        ENUM ('AWFUL', 'BAD', 'GOOD_ENOUGH', 'GOOD', 'BEST'),
     comment_text varchar(500) NOT NULL,
     comment_date timestamp,
-    PRIMARY KEY (comment_id)
+    PRIMARY KEY (id)
 );
 
 
 /*Add foreign keys*/
 ALTER TABLE products
     ADD CONSTRAINT products_manufacturers_fk
-        FOREIGN KEY (manuf_id) REFERENCES manufacturers (manuf_id);
+        FOREIGN KEY (manuf_id) REFERENCES manufacturers (id);
 
 ALTER TABLE products
     ADD CONSTRAINT products_categories_fk
-        FOREIGN KEY (cat_id) REFERENCES categories (cat_id);
+        FOREIGN KEY (cat_id) REFERENCES categories (id);
 
 ALTER TABLE product_attributes
     ADD CONSTRAINT attributes_products_fk
-        FOREIGN KEY (prod_id) REFERENCES products (prod_id);
+        FOREIGN KEY (prod_id) REFERENCES products (id);
 
 ALTER TABLE product_comments
     ADD CONSTRAINT comments_products_fk
-        FOREIGN KEY (prod_id) REFERENCES products (prod_id);
+        FOREIGN KEY (prod_id) REFERENCES products (id);
 
 ALTER TABLE order_product
     ADD CONSTRAINT order_product_product_fk
-        FOREIGN KEY (prod_id) REFERENCES products (prod_id);
+        FOREIGN KEY (prod_id) REFERENCES products (id);
 
 ALTER TABLE order_product
     ADD CONSTRAINT order_product_order_fk
-        FOREIGN KEY (order_id) REFERENCES orders (order_id);
+        FOREIGN KEY (order_id) REFERENCES orders (id);
+
 
 CREATE trigger average_score_insert
     AFTER INSERT

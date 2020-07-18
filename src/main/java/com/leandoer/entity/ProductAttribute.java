@@ -12,11 +12,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @ToString
-public class ProductAttribute {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class ProductAttribute extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prod_id")

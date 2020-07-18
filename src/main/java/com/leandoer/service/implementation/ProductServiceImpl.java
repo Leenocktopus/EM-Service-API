@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto addProduct(ProductDto product) {
-        if (productRepository.existsById(product.getProductId())){
+        if (productRepository.existsById(product.getId())){
             throw new RuntimeException();
         }
         productRepository.save(product.toProduct());

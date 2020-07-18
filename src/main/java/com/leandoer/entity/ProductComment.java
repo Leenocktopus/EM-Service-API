@@ -15,12 +15,7 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @ToString
-public class ProductComment {
-
-    @Id
-    @Column(name = "comment_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long commentId;
+public class ProductComment extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prod_id")

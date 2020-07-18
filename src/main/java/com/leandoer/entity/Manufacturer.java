@@ -14,11 +14,7 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-public class Manufacturer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "manuf_id")
-    private long id;
+public class Manufacturer extends BaseEntity{
 
     @Column(name = "name")
     private String name;
