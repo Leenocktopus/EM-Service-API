@@ -3,7 +3,6 @@ package com.leandoer.service.implementation;
 import com.leandoer.entity.Category;
 import com.leandoer.entity.dto.CategoryDto;
 import com.leandoer.exception.EntityConflictException;
-import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.repository.CategoryRepository;
 import com.leandoer.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto modifyCategory(long id, CategoryDto category){
+    public CategoryDto modifyCategory(long id, CategoryDto category) {
         checkForDuplicate(category);
         Category selected = categoryRepository.findById(id).orElse(new Category());
         selected.setName(category.getName());
@@ -54,7 +53,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto deleteCategory(long id){
+    public CategoryDto deleteCategory(long id) {
         Category category = categoryRepository.findById(id).orElseThrow(RuntimeException::new);
         categoryRepository.delete(category);
         return new CategoryDto(category);

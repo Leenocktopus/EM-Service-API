@@ -1,14 +1,10 @@
 package com.leandoer.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,7 +12,7 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-public class Category extends BaseEntity{
+public class Category extends BaseEntity {
 
     @Column(name = "name")
     private String name;

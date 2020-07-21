@@ -29,7 +29,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 
     @Override
     public ProductCommentDto addProductComment(long productId, ProductCommentDto comment) {
-        if (productCommentRepository.existsById(comment.getId())){
+        if (productCommentRepository.existsById(comment.getId())) {
             throw new RuntimeException();
         }
         Product id = new Product();
@@ -44,7 +44,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
     public ProductCommentDto getProductComment(long productId, long commentId) {
         return new ProductCommentDto(productCommentRepository.findByIdAndProductId(commentId, productId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Comment with id: "+commentId+" was not found for product with id: "+productId
+                        "Comment with id: " + commentId + " was not found for product with id: " + productId
                 )));
     }
 
@@ -68,7 +68,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
     public ProductCommentDto deleteProductComment(long productId, long commentId) {
         ProductComment selected = productCommentRepository.findByIdAndProductId(commentId, productId)
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Comment with id: "+commentId+" was not found for product with id: "+productId
+                        "Comment with id: " + commentId + " was not found for product with id: " + productId
                 ));
         productCommentRepository.delete(selected);
         return new ProductCommentDto(selected);

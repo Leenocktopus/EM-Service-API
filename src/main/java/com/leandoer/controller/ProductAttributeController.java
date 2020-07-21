@@ -1,12 +1,12 @@
 package com.leandoer.controller;
 
-import com.leandoer.entity.ProductAttribute;
 import com.leandoer.entity.dto.ProductAttributeDto;
 import com.leandoer.service.ProductAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductAttributeController {

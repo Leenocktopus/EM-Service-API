@@ -1,10 +1,10 @@
 package com.leandoer.service.implementation;
 
+import com.leandoer.entity.Order;
 import com.leandoer.entity.dto.OrderDto;
 import com.leandoer.exception.EntityNotFoundException;
-import com.leandoer.service.OrderService;
-import com.leandoer.entity.Order;
 import com.leandoer.repository.OrderRepository;
+import com.leandoer.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto addOrder(OrderDto order) {
-        if (orderRepository.existsById(order.getId())){
+        if (orderRepository.existsById(order.getId())) {
             throw new RuntimeException();
         }
         orderRepository.save(order.toOrder());
@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto getOneOrder(long id) {
         return new OrderDto(orderRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Order with id: "+id+" has not been found")
+                () -> new EntityNotFoundException("Order with id: " + id + " has not been found")
         ));
     }
 
@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto deleteOrder(long id) {
         Order selected = orderRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Order with id: "+id+" has not been found")
+                () -> new EntityNotFoundException("Order with id: " + id + " has not been found")
         );
         orderRepository.delete(selected);
         return new OrderDto(selected);

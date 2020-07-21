@@ -13,21 +13,18 @@ import javax.persistence.*;
 @EqualsAndHashCode
 public class OrderProduct {
 
+    @Column(name = "quantity")
+    int quantity;
     @EmbeddedId
     private OrderProductId id;
-
     @MapsId("productId")
     @ManyToOne
     @JoinColumn(name = "prod_id")
     private Product product;
-
     @MapsId("orderId")
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-
-    @Column(name = "quantity")
-    int quantity;
 
 
     public OrderProduct(Product product, Order order, int quantity) {

@@ -29,7 +29,7 @@ public class ProductCommentDto {
         this.date = productComment.getDate();
     }
 
-    public ProductComment toProductComment(){
+    public ProductComment toProductComment() {
         ProductComment productComment = new ProductComment();
         productComment.setId(id);
         productComment.setUser(user);

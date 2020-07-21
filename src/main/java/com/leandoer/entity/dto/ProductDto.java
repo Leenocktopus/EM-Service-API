@@ -1,7 +1,7 @@
 package com.leandoer.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.leandoer.entity.*;
+import com.leandoer.entity.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,7 +37,7 @@ public class ProductDto {
         this.totalScore = product.getTotalScore();
     }
 
-    public Product toProduct(){
+    public Product toProduct() {
         Product product = new Product();
         product.setId(this.id);
         product.setName(this.name);

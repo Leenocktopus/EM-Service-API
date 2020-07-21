@@ -1,6 +1,5 @@
 package com.leandoer.service;
 
-import com.leandoer.entity.ProductComment;
 import com.leandoer.entity.dto.ProductCommentDto;
 
 import java.util.List;

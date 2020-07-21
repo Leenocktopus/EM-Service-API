@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,7 +17,7 @@ import java.util.List;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = true)
-public class Order extends BaseEntity{
+public class Order extends BaseEntity {
 
 
     @Column(name = "cust_name")
@@ -41,17 +40,16 @@ public class Order extends BaseEntity{
     private List<OrderProduct> products = new ArrayList<>();
 
 
-
-    public void addProduct(Product product, int quantity){
+    public void addProduct(Product product, int quantity) {
         OrderProduct op = new OrderProduct(product, this, quantity);
         products.add(op);
         product.getOrders().add(op);
     }
 
-    public void removeProduct(Product product){
-        for (Iterator<OrderProduct> iterator = products.iterator(); iterator.hasNext();){
+    public void removeProduct(Product product) {
+        for (Iterator<OrderProduct> iterator = products.iterator(); iterator.hasNext(); ) {
             OrderProduct op = iterator.next();
-            if (op.getProduct().equals(product) && op.getOrder().equals(this)){
+            if (op.getProduct().equals(product) && op.getOrder().equals(this)) {
                 iterator.remove();
                 op.getProduct().getOrders().remove(op);
                 op.setOrder(null);

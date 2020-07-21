@@ -1,7 +1,6 @@
 package com.leandoer.entity;
 
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +17,7 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-public class Product extends BaseEntity{
+public class Product extends BaseEntity {
 
     @Column(name = "product_name")
     private String name;

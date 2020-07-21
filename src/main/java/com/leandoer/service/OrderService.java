@@ -1,6 +1,5 @@
 package com.leandoer.service;
 
-import com.leandoer.entity.Order;
 import com.leandoer.entity.dto.OrderDto;
 
 import java.util.List;

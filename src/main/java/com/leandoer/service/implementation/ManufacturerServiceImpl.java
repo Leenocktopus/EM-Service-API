@@ -1,11 +1,10 @@
 package com.leandoer.service.implementation;
 
+import com.leandoer.entity.Manufacturer;
 import com.leandoer.entity.dto.ManufacturerDto;
 import com.leandoer.exception.EntityConflictException;
-import com.leandoer.exception.EntityNotFoundException;
-import com.leandoer.service.ManufacturerService;
-import com.leandoer.entity.Manufacturer;
 import com.leandoer.repository.ManufacturerRepository;
+import com.leandoer.service.ManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

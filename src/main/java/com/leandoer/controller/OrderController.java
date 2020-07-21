@@ -1,9 +1,7 @@
 package com.leandoer.controller;
 
-import com.leandoer.entity.Category;
 import com.leandoer.entity.dto.OrderDto;
 import com.leandoer.service.OrderService;
-import com.leandoer.entity.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +28,7 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public OrderDto getOneOrder(@PathVariable("id") long id){
+    public OrderDto getOneOrder(@PathVariable("id") long id) {
         return orderService.getOneOrder(id);
     }
 

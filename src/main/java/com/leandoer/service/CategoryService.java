@@ -1,6 +1,5 @@
 package com.leandoer.service;
 
-import com.leandoer.entity.Category;
 import com.leandoer.entity.dto.CategoryDto;
 
 import java.util.List;

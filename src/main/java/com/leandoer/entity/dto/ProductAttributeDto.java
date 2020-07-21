@@ -22,7 +22,7 @@ public class ProductAttributeDto {
         this.value = productAttribute.getValue();
     }
 
-    public ProductAttribute toProductAttribute(){
+    public ProductAttribute toProductAttribute() {
         ProductAttribute productAttribute = new ProductAttribute();
         productAttribute.setId(id);
         productAttribute.setName(this.name);

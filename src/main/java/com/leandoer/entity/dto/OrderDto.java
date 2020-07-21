@@ -37,7 +37,7 @@ public class OrderDto {
                 .collect(Collectors.toList());
     }
 
-    public Order toOrder(){
+    public Order toOrder() {
         Order order = new Order();
         order.setId(this.id);
         order.setCustomerName(this.customerName);

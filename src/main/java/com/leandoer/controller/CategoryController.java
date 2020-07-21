@@ -1,6 +1,5 @@
 package com.leandoer.controller;
 
-import com.leandoer.entity.Category;
 import com.leandoer.entity.dto.CategoryDto;
 import com.leandoer.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public CategoryDto getOneCategory(@PathVariable("id") long id){
+    public CategoryDto getOneCategory(@PathVariable("id") long id) {
         return categoryService.getOneCategory(id);
     }
 

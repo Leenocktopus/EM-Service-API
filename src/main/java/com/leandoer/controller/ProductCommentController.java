@@ -1,6 +1,5 @@
 package com.leandoer.controller;
 
-import com.leandoer.entity.ProductComment;
 import com.leandoer.entity.dto.ProductCommentDto;
 import com.leandoer.service.ProductCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ public class ProductCommentController {
     public ProductCommentController(ProductCommentService productCommentService) {
         this.productCommentService = productCommentService;
     }
-
-
 
 
     @GetMapping("/{productId}/comments")
@@ -54,7 +51,6 @@ public class ProductCommentController {
                                            @PathVariable("commentId") long commentId) {
         return productCommentService.deleteProductComment(productId, commentId);
     }
-
 
 
 }

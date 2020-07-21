@@ -1,12 +1,10 @@
 package com.leandoer.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 
@@ -15,7 +13,7 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @ToString
-public class ProductComment extends BaseEntity{
+public class ProductComment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prod_id")

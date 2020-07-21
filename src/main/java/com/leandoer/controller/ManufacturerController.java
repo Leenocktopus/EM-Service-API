@@ -2,7 +2,6 @@ package com.leandoer.controller;
 
 import com.leandoer.entity.dto.ManufacturerDto;
 import com.leandoer.service.ManufacturerService;
-import com.leandoer.entity.Manufacturer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,7 @@ public class ManufacturerController {
     }
 
     @GetMapping("/{id}")
-    public ManufacturerDto getOneManufacturer(@PathVariable("id") long id){
+    public ManufacturerDto getOneManufacturer(@PathVariable("id") long id) {
         return manufacturerService.getOneManufacturer(id);
     }
 

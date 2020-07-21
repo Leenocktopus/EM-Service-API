@@ -20,7 +20,7 @@ public class ManufacturerDto {
         this.name = manufacturer.getName();
     }
 
-    public Manufacturer toManufacturer(){
+    public Manufacturer toManufacturer() {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setId(this.id);
         manufacturer.setName(this.name);

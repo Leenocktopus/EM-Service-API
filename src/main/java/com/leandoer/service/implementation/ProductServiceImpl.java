@@ -1,9 +1,9 @@
 package com.leandoer.service.implementation;
 
+import com.leandoer.entity.Product;
 import com.leandoer.entity.dto.ProductDto;
 import com.leandoer.exception.IllegalEntityException;
-import com.leandoer.repository.*;
-import com.leandoer.entity.Product;
+import com.leandoer.repository.ProductRepository;
 import com.leandoer.service.ProductService;
 import org.hibernate.TransientPropertyValueException;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto addProduct(ProductDto product) {
-        if (productRepository.existsById(product.getId())){
+        if (productRepository.existsById(product.getId())) {
             throw new RuntimeException();
         }
         productRepository.save(product.toProduct());
@@ -50,9 +50,9 @@ public class ProductServiceImpl implements ProductService {
         selected.setDescr(product.getDescr());
         selected.setPopularity(product.getPopularity());
         selected.setTotalScore(product.getTotalScore());
-        try{
+        try {
             productRepository.save(selected);
-        } catch (TransientPropertyValueException ex){
+        } catch (TransientPropertyValueException ex) {
             throw new IllegalEntityException("Product references unsaved transient instance, provide id of a manufacturer or category");
         }
 

@@ -1,6 +1,6 @@
 package com.leandoer.exception;
 
-public class IllegalEntityException extends RuntimeException{
+public class IllegalEntityException extends RuntimeException {
 
     public IllegalEntityException() {
     }

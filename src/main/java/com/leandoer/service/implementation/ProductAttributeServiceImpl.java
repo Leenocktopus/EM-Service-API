@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class ProductAttributeServiceImpl implements ProductAttributeService {
 
@@ -30,7 +31,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
     @Override
     public ProductAttributeDto addProductAttribute(long productId, ProductAttributeDto attribute) {
-        if (productAttributeRepository.existsById(attribute.getId())){
+        if (productAttributeRepository.existsById(attribute.getId())) {
             throw new RuntimeException();
         }
         Product id = new Product();
@@ -45,10 +46,9 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
     public ProductAttributeDto getProductAttribute(long productId, long attributeId) {
         return new ProductAttributeDto(productAttributeRepository.findByIdAndProductId(attributeId, productId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("Attribute with id: "+attributeId+" was not found for product with id: "+productId)
-        ));
+                        () -> new EntityNotFoundException("Attribute with id: " + attributeId + " was not found for product with id: " + productId)
+                ));
     }
-
 
 
     @Override
@@ -68,7 +68,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
     public ProductAttributeDto deleteProductAttribute(long productId, long attributeId) {
         ProductAttribute productAttribute = productAttributeRepository.findByIdAndProductId(attributeId, productId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException("Attribute with id: "+attributeId+" was not found for product with id: "+productId)
+                        () -> new EntityNotFoundException("Attribute with id: " + attributeId + " was not found for product with id: " + productId)
                 );
         productAttributeRepository.delete(productAttribute);
         return new ProductAttributeDto(productAttribute);

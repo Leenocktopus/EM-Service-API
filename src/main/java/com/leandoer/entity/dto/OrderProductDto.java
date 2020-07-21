@@ -19,7 +19,7 @@ public class OrderProductDto {
         this.product = new ProductDto(orderProduct.getProduct());
     }
 
-    public OrderProduct toOrderProduct(){
+    public OrderProduct toOrderProduct() {
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setQuantity(this.quantity);
         orderProduct.setProduct(this.product.toProduct());

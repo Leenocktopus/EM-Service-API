@@ -1,6 +1,5 @@
 package com.leandoer.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @ToString
-public class ProductAttribute extends BaseEntity{
+public class ProductAttribute extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prod_id")
