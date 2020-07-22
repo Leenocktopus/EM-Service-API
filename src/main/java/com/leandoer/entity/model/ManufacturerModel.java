@@ -1,4 +1,4 @@
-package com.leandoer.entity.dto;
+package com.leandoer.entity.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -6,16 +6,17 @@ import com.leandoer.entity.Manufacturer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ManufacturerDto {
+@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+public class ManufacturerModel extends RepresentationModel<ManufacturerModel> {
     private long id;
     private String name;
 
-    public ManufacturerDto(Manufacturer manufacturer) {
+    public ManufacturerModel(Manufacturer manufacturer) {
         this.id = manufacturer.getId();
         this.name = manufacturer.getName();
     }

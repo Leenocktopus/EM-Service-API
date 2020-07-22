@@ -2,7 +2,7 @@ package com.leandoer.service.implementation;
 
 import com.leandoer.entity.Product;
 import com.leandoer.entity.ProductAttribute;
-import com.leandoer.entity.dto.ProductAttributeDto;
+import com.leandoer.entity.model.ProductAttributeModel;
 import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.repository.ProductAttributeRepository;
 import com.leandoer.service.ProductAttributeService;
@@ -23,14 +23,14 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
     }
 
     @Override
-    public List<ProductAttributeDto> getAllProductAttributes(long productId) {
+    public List<ProductAttributeModel> getAllProductAttributes(long productId) {
         return productAttributeRepository.findAllByProductId(productId).stream()
-                .map(ProductAttributeDto::new)
+                .map(ProductAttributeModel::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ProductAttributeDto addProductAttribute(long productId, ProductAttributeDto attribute) {
+    public ProductAttributeModel addProductAttribute(long productId, ProductAttributeModel attribute) {
         if (productAttributeRepository.existsById(attribute.getId())) {
             throw new RuntimeException();
         }
@@ -43,8 +43,8 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
     }
 
     @Override
-    public ProductAttributeDto getProductAttribute(long productId, long attributeId) {
-        return new ProductAttributeDto(productAttributeRepository.findByIdAndProductId(attributeId, productId)
+    public ProductAttributeModel getProductAttribute(long productId, long attributeId) {
+        return new ProductAttributeModel(productAttributeRepository.findByIdAndProductId(attributeId, productId)
                 .orElseThrow(
                         () -> new EntityNotFoundException("Attribute with id: " + attributeId + " was not found for product with id: " + productId)
                 ));
@@ -52,7 +52,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
 
     @Override
-    public ProductAttributeDto modifyProductAttribute(long productId, long attributeId, ProductAttributeDto attribute) {
+    public ProductAttributeModel modifyProductAttribute(long productId, long attributeId, ProductAttributeModel attribute) {
         ProductAttribute selected = productAttributeRepository.findByIdAndProductId(attributeId, productId)
                 .orElse(new ProductAttribute());
         Product id = new Product();
@@ -61,16 +61,16 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
         selected.setName(attribute.getName());
         selected.setValue(attribute.getValue());
         productAttributeRepository.save(selected);
-        return new ProductAttributeDto(selected);
+        return new ProductAttributeModel(selected);
     }
 
     @Override
-    public ProductAttributeDto deleteProductAttribute(long productId, long attributeId) {
+    public ProductAttributeModel deleteProductAttribute(long productId, long attributeId) {
         ProductAttribute productAttribute = productAttributeRepository.findByIdAndProductId(attributeId, productId)
                 .orElseThrow(
                         () -> new EntityNotFoundException("Attribute with id: " + attributeId + " was not found for product with id: " + productId)
                 );
         productAttributeRepository.delete(productAttribute);
-        return new ProductAttributeDto(productAttribute);
+        return new ProductAttributeModel(productAttribute);
     }
 }

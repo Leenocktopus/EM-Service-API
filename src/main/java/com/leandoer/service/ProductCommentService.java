@@ -1,20 +1,22 @@
 package com.leandoer.service;
 
-import com.leandoer.entity.dto.ProductCommentDto;
+import com.leandoer.entity.model.ProductCommentModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ProductCommentService {
 
-    List<ProductCommentDto> getAllProductComments(long productId);
+    Page<ProductCommentModel> getAllProductComments(long productId, Pageable pageable);
 
-    ProductCommentDto addProductComment(long productId, ProductCommentDto comment);
+    ProductCommentModel addProductComment(long productId, ProductCommentModel comment);
 
-    ProductCommentDto getProductComment(long productId, long commentId);
+    ProductCommentModel getProductComment(long productId, long commentId);
 
-    ProductCommentDto modifyProductComment(long productId, long commentId, ProductCommentDto comment);
+    ProductCommentModel modifyProductComment(long productId, long commentId, ProductCommentModel comment);
 
-    ProductCommentDto deleteProductComment(long productId, long commentId);
+    ProductCommentModel deleteProductComment(long productId, long commentId);
 
 
 }

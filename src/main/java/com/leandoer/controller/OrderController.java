@@ -1,8 +1,14 @@
 package com.leandoer.controller;
 
-import com.leandoer.entity.dto.OrderDto;
+import com.leandoer.assembler.OrderAssembler;
+import com.leandoer.entity.model.OrderModel;
 import com.leandoer.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,34 +17,38 @@ import java.util.List;
 @RequestMapping("api/v1/orders")
 public class OrderController {
     OrderService orderService;
+    OrderAssembler assembler;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, OrderAssembler assembler) {
         this.orderService = orderService;
+        this.assembler = assembler;
     }
 
     @GetMapping
-    public List<OrderDto> getAllOrders() {
-        return orderService.getAllOrders();
+    public CollectionModel<RepresentationModel<OrderModel>> getAllOrders(@PageableDefault Pageable pageable,
+                                                                         PagedResourcesAssembler<OrderModel> pagedResourcesAssembler) {
+
+        return assembler.toCollectionModel(orderService.getAllOrders(pageable), pagedResourcesAssembler);
     }
 
     @PostMapping
-    public OrderDto add(@RequestBody OrderDto order) {
-        return orderService.addOrder(order);
+    public RepresentationModel<OrderModel> add(@RequestBody OrderModel order) {
+        return assembler.toModel(orderService.addOrder(order));
     }
 
     @GetMapping("/{id}")
-    public OrderDto getOneOrder(@PathVariable("id") long id) {
-        return orderService.getOneOrder(id);
+    public RepresentationModel<OrderModel> getOneOrder(@PathVariable("id") long id) {
+        return assembler.toModel(orderService.getOneOrder(id));
     }
 
     @PutMapping("/{id}")
-    public OrderDto modifyOrder(@PathVariable("id") long id, @RequestBody OrderDto order) {
-        return orderService.modifyOrder(id, order);
+    public RepresentationModel<OrderModel> modifyOrder(@PathVariable("id") long id, @RequestBody OrderModel order) {
+        return assembler.toModel(orderService.modifyOrder(id, order));
     }
 
     @DeleteMapping("/{id}")
-    public OrderDto deleteOrder(@PathVariable("id") long id) {
-        return orderService.deleteOrder(id);
+    public RepresentationModel<OrderModel> deleteOrder(@PathVariable("id") long id) {
+        return assembler.toModel(orderService.deleteOrder(id));
     }
 }

@@ -1,17 +1,17 @@
 package com.leandoer.service;
 
-import com.leandoer.entity.dto.ProductAttributeDto;
+import com.leandoer.entity.model.ProductAttributeModel;
 
 import java.util.List;
 
 public interface ProductAttributeService {
-    List<ProductAttributeDto> getAllProductAttributes(long productId);
+    List<ProductAttributeModel> getAllProductAttributes(long productId);
 
-    ProductAttributeDto getProductAttribute(long productId, long attributeId);
+    ProductAttributeModel getProductAttribute(long productId, long attributeId);
 
-    ProductAttributeDto addProductAttribute(long productId, ProductAttributeDto attribute);
+    ProductAttributeModel addProductAttribute(long productId, ProductAttributeModel attribute);
 
-    ProductAttributeDto modifyProductAttribute(long productId, long attributeId, ProductAttributeDto attribute);
+    ProductAttributeModel modifyProductAttribute(long productId, long attributeId, ProductAttributeModel attribute);
 
-    ProductAttributeDto deleteProductAttribute(long productId, long attributeId);
+    ProductAttributeModel deleteProductAttribute(long productId, long attributeId);
 }

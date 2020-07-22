@@ -1,8 +1,11 @@
 package com.leandoer.controller;
 
-import com.leandoer.entity.dto.ManufacturerDto;
+import com.leandoer.assembler.ManufacturerAssembler;
+import com.leandoer.entity.model.ManufacturerModel;
 import com.leandoer.service.ManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,36 +15,36 @@ import java.util.List;
 public class ManufacturerController {
 
     ManufacturerService manufacturerService;
+    ManufacturerAssembler assembler;
 
     @Autowired
-    public ManufacturerController(ManufacturerService manufacturerService) {
+    public ManufacturerController(ManufacturerService manufacturerService, ManufacturerAssembler assembler) {
         this.manufacturerService = manufacturerService;
+        this.assembler = assembler;
     }
 
     @GetMapping
-    public List<ManufacturerDto> getAllManufacturers() {
-        return manufacturerService.getAllManufacturers();
+    public CollectionModel<RepresentationModel<ManufacturerModel>> getAllManufacturers() {
+        return assembler.toCollectionModel(manufacturerService.getAllManufacturers());
     }
 
     @PostMapping
-    public ManufacturerDto addManufacturer(@RequestBody ManufacturerDto manufacturer) {
-        return manufacturerService.addManufacturer(manufacturer);
+    public RepresentationModel<ManufacturerModel> addManufacturer(@RequestBody ManufacturerModel manufacturer) {
+        return assembler.toModel(manufacturerService.addManufacturer(manufacturer));
     }
 
     @GetMapping("/{id}")
-    public ManufacturerDto getOneManufacturer(@PathVariable("id") long id) {
-        return manufacturerService.getOneManufacturer(id);
+    public RepresentationModel<ManufacturerModel> getOneManufacturer(@PathVariable("id") long id) {
+        return assembler.toModel(manufacturerService.getOneManufacturer(id));
     }
 
     @PutMapping("/{id}")
-    public ManufacturerDto modifyManufacturer(@PathVariable("id") long id, @RequestBody ManufacturerDto manufacturer) {
-        return manufacturerService.modifyManufacturer(id, manufacturer);
+    public RepresentationModel<ManufacturerModel> modifyManufacturer(@PathVariable("id") long id, @RequestBody ManufacturerModel manufacturer) {
+        return assembler.toModel(manufacturerService.modifyManufacturer(id, manufacturer));
     }
 
     @DeleteMapping("/{id}")
-    public ManufacturerDto deleteManufacturer(@PathVariable("id") long id) {
-        return manufacturerService.deleteManufacturer(id);
+    public RepresentationModel<ManufacturerModel> deleteManufacturer(@PathVariable("id") long id) {
+        return assembler.toModel(manufacturerService.deleteManufacturer(id));
     }
-
-
 }

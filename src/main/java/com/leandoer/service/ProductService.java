@@ -1,20 +1,20 @@
 package com.leandoer.service;
 
 
-import com.leandoer.entity.dto.ProductDto;
-
-import java.util.List;
+import com.leandoer.entity.model.ProductModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 public interface ProductService {
 
-    List<ProductDto> getAllProducts();
+    Page<ProductModel> getAllProducts(Pageable pageable);
 
-    ProductDto getProductById(Long id);
+    ProductModel getProductById(Long id);
 
-    ProductDto addProduct(ProductDto product);
+    ProductModel addProduct(ProductModel product);
 
-    ProductDto modifyProduct(long id, ProductDto product);
+    ProductModel modifyProduct(long id, ProductModel product);
 
-    ProductDto deleteProduct(long id);
+    ProductModel deleteProduct(long id);
 }

@@ -57,7 +57,7 @@ CREATE TABLE order_product
 CREATE TABLE product_comments
 (
     id   bigint auto_increment,
-    prod_id      bigint,
+    prod_id      bigint NOT NULL,
     user         char(20),
     score        ENUM ('AWFUL', 'BAD', 'GOOD_ENOUGH', 'GOOD', 'BEST'),
     comment_text varchar(500) NOT NULL,
@@ -99,8 +99,8 @@ CREATE trigger average_score_insert
     update products
     set total_score=(SELECT avg(score+0)
                      from product_comments
-                     where product_comments.prod_id = products.prod_id)
-    where prod_id = NEW.prod_id;
+                     where product_comments.prod_id = products.id)
+    where id = NEW.prod_id;
 
 CREATE trigger average_score_update
     AFTER UPDATE
@@ -109,8 +109,8 @@ CREATE trigger average_score_update
     update products
     set total_score=(SELECT avg(score+0)
                      from product_comments
-                     where product_comments.prod_id = products.prod_id)
-    where prod_id = NEW.prod_id;
+                     where product_comments.prod_id = products.id)
+    where id = NEW.prod_id;
 
 
 CREATE trigger popularity_insert
@@ -121,7 +121,7 @@ CREATE trigger popularity_insert
     set popularity=(SELECT sum(quantity)
                      from order_product
                      where prod_id = NEW.prod_id)
-    where prod_id = NEW.prod_id;
+    where id = NEW.prod_id;
 
 CREATE trigger popularity_update
     AFTER UPDATE
@@ -131,5 +131,5 @@ CREATE trigger popularity_update
     set popularity=(SELECT sum(quantity)
                     from order_product
                     where prod_id = NEW.prod_id)
-    where prod_id = NEW.prod_id;
+    where id = NEW.prod_id;
 

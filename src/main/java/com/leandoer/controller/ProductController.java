@@ -1,48 +1,56 @@
 package com.leandoer.controller;
 
 
-import com.leandoer.entity.dto.ProductDto;
+import com.leandoer.assembler.ProductAssembler;
+import com.leandoer.entity.model.ProductModel;
 import com.leandoer.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 
 @RestController
 @RequestMapping("api/v1/products")
 public class ProductController {
 
     ProductService productService;
+    ProductAssembler assembler;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, ProductAssembler assembler) {
         this.productService = productService;
+        this.assembler = assembler;
     }
 
     @GetMapping
-    public List<ProductDto> getAllProducts() {
-        return productService.getAllProducts();
+    public CollectionModel<RepresentationModel<ProductModel>> getAllProducts(@PageableDefault Pageable pageable,
+                                                                             PagedResourcesAssembler<ProductModel> pagedResourcesAssembler) {
+        return assembler.toCollectionModel(productService.getAllProducts(pageable), pagedResourcesAssembler);
     }
 
     @PostMapping
-    public ProductDto addProduct(@RequestBody ProductDto product) {
-        return productService.addProduct(product);
+    public RepresentationModel<ProductModel> addProduct(@RequestBody ProductModel product) {
+        return assembler.toModel(productService.addProduct(product));
     }
 
     @GetMapping("/{id}")
-    public ProductDto getProduct(@PathVariable long id) {
-        return productService.getProductById(id);
+    public RepresentationModel<ProductModel> getProduct(@PathVariable long id) {
+        return assembler.toModel(productService.getProductById(id));
     }
 
     @PutMapping("/{id}")
-    public ProductDto modifyProduct(@PathVariable long id, @RequestBody ProductDto product) {
-        return productService.modifyProduct(id, product);
+    public RepresentationModel<ProductModel> modifyProduct(@PathVariable long id, @RequestBody ProductModel product) {
+        return assembler.toModel(productService.modifyProduct(id, product));
     }
 
     @DeleteMapping("/{id}")
-    public ProductDto deleteProduct(@PathVariable long id) {
-        return productService.deleteProduct(id);
+    public RepresentationModel<ProductModel> deleteProduct(@PathVariable long id) {
+        return assembler.toModel(productService.deleteProduct(id));
     }
 
 

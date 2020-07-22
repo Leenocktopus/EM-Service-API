@@ -1,7 +1,7 @@
 package com.leandoer.service.implementation;
 
 import com.leandoer.entity.Manufacturer;
-import com.leandoer.entity.dto.ManufacturerDto;
+import com.leandoer.entity.model.ManufacturerModel;
 import com.leandoer.exception.EntityConflictException;
 import com.leandoer.repository.ManufacturerRepository;
 import com.leandoer.service.ManufacturerService;
@@ -23,41 +23,41 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
 
     @Override
-    public List<ManufacturerDto> getAllManufacturers() {
-        return manufacturerRepository.findAll().stream().map(ManufacturerDto::new).collect(Collectors.toList());
+    public List<ManufacturerModel> getAllManufacturers() {
+        return manufacturerRepository.findAll().stream().map(ManufacturerModel::new).collect(Collectors.toList());
     }
 
     @Override
-    public ManufacturerDto addManufacturer(ManufacturerDto manufacturer) {
+    public ManufacturerModel addManufacturer(ManufacturerModel manufacturer) {
         checkForDuplicate(manufacturer);
         manufacturerRepository.save(manufacturer.toManufacturer());
-        return new ManufacturerDto(manufacturerRepository.findByName(manufacturer.getName())
+        return new ManufacturerModel(manufacturerRepository.findByName(manufacturer.getName())
                 .orElseThrow(RuntimeException::new));
     }
 
     @Override
-    public ManufacturerDto getOneManufacturer(long id) {
-        return new ManufacturerDto(manufacturerRepository.findById(id)
+    public ManufacturerModel getOneManufacturer(long id) {
+        return new ManufacturerModel(manufacturerRepository.findById(id)
                 .orElseThrow(RuntimeException::new));
     }
 
     @Override
-    public ManufacturerDto modifyManufacturer(long id, ManufacturerDto manufacturer) {
+    public ManufacturerModel modifyManufacturer(long id, ManufacturerModel manufacturer) {
         checkForDuplicate(manufacturer);
         Manufacturer selected = manufacturerRepository.findById(id).orElse(new Manufacturer());
         selected.setName(manufacturer.getName());
         manufacturerRepository.save(selected);
-        return new ManufacturerDto(selected);
+        return new ManufacturerModel(selected);
     }
 
     @Override
-    public ManufacturerDto deleteManufacturer(long id) {
+    public ManufacturerModel deleteManufacturer(long id) {
         Manufacturer selected = manufacturerRepository.findById(id).orElseThrow(RuntimeException::new);
         manufacturerRepository.delete(selected);
-        return new ManufacturerDto(selected);
+        return new ManufacturerModel(selected);
     }
 
-    private void checkForDuplicate(ManufacturerDto manufacturer) {
+    private void checkForDuplicate(ManufacturerModel manufacturer) {
         String name = manufacturer.getName();
         if (manufacturerRepository.existsByName(name)) {
             throw new EntityConflictException("Manufacturer with name \" " + name + "\" already exists");

@@ -1,25 +1,31 @@
-package com.leandoer.entity.dto;
+package com.leandoer.entity.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.leandoer.entity.Product;
 import com.leandoer.entity.ProductAttribute;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductAttributeDto {
+@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+public class ProductAttributeModel extends RepresentationModel<ProductAttributeModel> {
     private long id;
     private String name;
     private String value;
+    @JsonIgnore
+    private long productId = 0;
 
-    public ProductAttributeDto(ProductAttribute productAttribute) {
+    public ProductAttributeModel(ProductAttribute productAttribute) {
         this.id = productAttribute.getId();
         this.name = productAttribute.getName();
         this.value = productAttribute.getValue();
+        this.productId = productAttribute.getProduct().getId();
     }
 
     public ProductAttribute toProductAttribute() {
@@ -27,6 +33,9 @@ public class ProductAttributeDto {
         productAttribute.setId(id);
         productAttribute.setName(this.name);
         productAttribute.setValue(this.value);
+        Product product = new Product();
+        product.setId(productId);
+        productAttribute.setProduct(product);
         return productAttribute;
     }
 }

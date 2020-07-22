@@ -1,4 +1,4 @@
-package com.leandoer.entity.dto;
+package com.leandoer.entity.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.leandoer.entity.Order;
@@ -6,6 +6,7 @@ import com.leandoer.entity.OrderStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderDto {
+@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+public class OrderModel extends RepresentationModel<OrderModel> {
     private long id;
     private String customerName;
     private String customerPhone;
@@ -23,9 +24,9 @@ public class OrderDto {
     private Timestamp date;
     private OrderStatus orderStatus;
 
-    private List<OrderProductDto> products;
+    private List<OrderProductModel> products;
 
-    public OrderDto(Order order) {
+    public OrderModel(Order order) {
         this.id = order.getId();
         this.customerName = order.getCustomerName();
         this.customerPhone = order.getCustomerPhone();
@@ -33,7 +34,7 @@ public class OrderDto {
         this.date = order.getDate();
         this.orderStatus = order.getOrderStatus();
         this.products = order.getProducts().stream()
-                .map(OrderProductDto::new)
+                .map(OrderProductModel::new)
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +47,7 @@ public class OrderDto {
         order.setDate(this.date);
         order.setOrderStatus(this.orderStatus);
         this.products.stream()
-                .map(OrderProductDto::toOrderProduct)
+                .map(OrderProductModel::toOrderProduct)
                 .forEach(orderProduct -> order.addProduct(orderProduct.getProduct(), orderProduct.getQuantity()));
         return order;
     }

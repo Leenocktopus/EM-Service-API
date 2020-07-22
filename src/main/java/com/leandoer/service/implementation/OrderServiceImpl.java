@@ -1,15 +1,14 @@
 package com.leandoer.service.implementation;
 
 import com.leandoer.entity.Order;
-import com.leandoer.entity.dto.OrderDto;
+import com.leandoer.entity.model.OrderModel;
 import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.repository.OrderRepository;
 import com.leandoer.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -23,12 +22,12 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public List<OrderDto> getAllOrders() {
-        return orderRepository.findAll().stream().map(OrderDto::new).collect(Collectors.toList());
+    public Page<OrderModel> getAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable).map(OrderModel::new);
     }
 
     @Override
-    public OrderDto addOrder(OrderDto order) {
+    public OrderModel addOrder(OrderModel order) {
         if (orderRepository.existsById(order.getId())) {
             throw new RuntimeException();
         }
@@ -37,14 +36,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto getOneOrder(long id) {
-        return new OrderDto(orderRepository.findById(id).orElseThrow(
+    public OrderModel getOneOrder(long id) {
+        return new OrderModel(orderRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Order with id: " + id + " has not been found")
         ));
     }
 
     @Override
-    public OrderDto modifyOrder(long id, OrderDto orderDto) {
+    public OrderModel modifyOrder(long id, OrderModel orderDto) {
         Order selected = orderRepository.findById(id).orElse(new Order());
         Order order = orderDto.toOrder();
         selected.setCustomerName(order.getCustomerName());
@@ -57,11 +56,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto deleteOrder(long id) {
+    public OrderModel deleteOrder(long id) {
         Order selected = orderRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Order with id: " + id + " has not been found")
         );
         orderRepository.delete(selected);
-        return new OrderDto(selected);
+        return new OrderModel(selected);
     }
 }

@@ -1,18 +1,18 @@
 package com.leandoer.service;
 
-import com.leandoer.entity.dto.ManufacturerDto;
+import com.leandoer.entity.model.ManufacturerModel;
 
 import java.util.List;
 
 public interface ManufacturerService {
 
-    List<ManufacturerDto> getAllManufacturers();
+    List<ManufacturerModel> getAllManufacturers();
 
-    ManufacturerDto addManufacturer(ManufacturerDto manufacturer);
+    ManufacturerModel addManufacturer(ManufacturerModel manufacturer);
 
-    ManufacturerDto getOneManufacturer(long id);
+    ManufacturerModel getOneManufacturer(long id);
 
-    ManufacturerDto modifyManufacturer(long id, ManufacturerDto manufacturer);
+    ManufacturerModel modifyManufacturer(long id, ManufacturerModel manufacturer);
 
-    ManufacturerDto deleteManufacturer(long id);
+    ManufacturerModel deleteManufacturer(long id);
 }

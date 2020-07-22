@@ -1,19 +1,21 @@
 package com.leandoer.service;
 
-import com.leandoer.entity.dto.OrderDto;
+import com.leandoer.entity.model.OrderModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface OrderService {
 
 
-    List<OrderDto> getAllOrders();
+    Page<OrderModel> getAllOrders(Pageable pageable);
 
-    OrderDto addOrder(OrderDto order);
+    OrderModel addOrder(OrderModel order);
 
-    OrderDto getOneOrder(long id);
+    OrderModel getOneOrder(long id);
 
-    OrderDto modifyOrder(long id, OrderDto orderDto);
+    OrderModel modifyOrder(long id, OrderModel orderDto);
 
-    OrderDto deleteOrder(long id);
+    OrderModel deleteOrder(long id);
 }

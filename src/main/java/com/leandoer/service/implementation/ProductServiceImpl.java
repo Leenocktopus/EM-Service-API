@@ -1,15 +1,14 @@
 package com.leandoer.service.implementation;
 
 import com.leandoer.entity.Product;
-import com.leandoer.entity.dto.ProductDto;
+import com.leandoer.entity.model.ProductModel;
 import com.leandoer.exception.IllegalEntityException;
 import com.leandoer.repository.ProductRepository;
 import com.leandoer.service.ProductService;
 import org.hibernate.TransientPropertyValueException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -21,17 +20,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getAllProducts() {
-        return productRepository.findAll().stream().map(ProductDto::new).collect(Collectors.toList());
+    public Page<ProductModel> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable).map(ProductModel::new);
     }
 
     @Override
-    public ProductDto getProductById(Long id) {
-        return new ProductDto(productRepository.findById(id).orElseThrow(RuntimeException::new));
+    public ProductModel getProductById(Long id) {
+        return new ProductModel(productRepository.findById(id).orElseThrow(RuntimeException::new));
     }
 
     @Override
-    public ProductDto addProduct(ProductDto product) {
+    public ProductModel addProduct(ProductModel product) {
         if (productRepository.existsById(product.getId())) {
             throw new RuntimeException();
         }
@@ -40,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto modifyProduct(long id, ProductDto product) {
+    public ProductModel modifyProduct(long id, ProductModel product) {
         Product selected = productRepository.findById(id).orElse(new Product());
         selected.setName(product.getName());
         selected.setManufacturer(product.getManufacturer().toManufacturer());
@@ -56,13 +55,13 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalEntityException("Product references unsaved transient instance, provide id of a manufacturer or category");
         }
 
-        return new ProductDto(selected);
+        return new ProductModel(selected);
     }
 
     @Override
-    public ProductDto deleteProduct(long id) {
+    public ProductModel deleteProduct(long id) {
         Product selected = productRepository.findById(id).orElseThrow(RuntimeException::new);
         productRepository.delete(selected);
-        return new ProductDto(selected);
+        return new ProductModel(selected);
     }
 }

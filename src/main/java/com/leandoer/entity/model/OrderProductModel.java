@@ -1,4 +1,4 @@
-package com.leandoer.entity.dto;
+package com.leandoer.entity.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.leandoer.entity.OrderProduct;
@@ -9,14 +9,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderProductDto {
+@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+public class OrderProductModel {
     int quantity;
-    ProductDto product = new ProductDto();
+    ProductModel product = new ProductModel();
 
-    public OrderProductDto(OrderProduct orderProduct) {
+    public OrderProductModel(OrderProduct orderProduct) {
         this.quantity = orderProduct.getQuantity();
-        this.product = new ProductDto(orderProduct.getProduct());
+        this.product = new ProductModel(orderProduct.getProduct());
     }
 
     public OrderProduct toOrderProduct() {

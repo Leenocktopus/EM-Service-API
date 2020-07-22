@@ -1,7 +1,7 @@
 package com.leandoer.service.implementation;
 
 import com.leandoer.entity.Category;
-import com.leandoer.entity.dto.CategoryDto;
+import com.leandoer.entity.model.CategoryModel;
 import com.leandoer.exception.EntityConflictException;
 import com.leandoer.repository.CategoryRepository;
 import com.leandoer.service.CategoryService;
@@ -23,43 +23,43 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public List<CategoryDto> getAllCategories() {
-        List<CategoryDto> result = categoryRepository.findAll().stream()
-                .map(CategoryDto::new)
+    public List<CategoryModel> getAllCategories() {
+        List<CategoryModel> result = categoryRepository.findAll().stream()
+                .map(CategoryModel::new)
                 .collect(Collectors.toList());
         return result;
     }
 
 
     @Override
-    public CategoryDto addCategory(CategoryDto category) {
+    public CategoryModel addCategory(CategoryModel category) {
         checkForDuplicate(category);
         categoryRepository.save(category.toCategory());
-        return new CategoryDto(categoryRepository.findByName(category.getName()).orElseThrow(RuntimeException::new));
+        return new CategoryModel(categoryRepository.findByName(category.getName()).orElseThrow(RuntimeException::new));
     }
 
     @Override
-    public CategoryDto getOneCategory(long id) {
-        return new CategoryDto(categoryRepository.findById(id).orElseThrow(RuntimeException::new));
+    public CategoryModel getOneCategory(long id) {
+        return new CategoryModel(categoryRepository.findById(id).orElseThrow(RuntimeException::new));
     }
 
     @Override
-    public CategoryDto modifyCategory(long id, CategoryDto category) {
+    public CategoryModel modifyCategory(long id, CategoryModel category) {
         checkForDuplicate(category);
         Category selected = categoryRepository.findById(id).orElse(new Category());
         selected.setName(category.getName());
         categoryRepository.save(selected);
-        return new CategoryDto(selected);
+        return new CategoryModel(selected);
     }
 
     @Override
-    public CategoryDto deleteCategory(long id) {
+    public CategoryModel deleteCategory(long id) {
         Category category = categoryRepository.findById(id).orElseThrow(RuntimeException::new);
         categoryRepository.delete(category);
-        return new CategoryDto(category);
+        return new CategoryModel(category);
     }
 
-    private void checkForDuplicate(CategoryDto category) {
+    private void checkForDuplicate(CategoryModel category) {
         String name = category.getName();
         if (categoryRepository.existsByName(name)) {
             throw new EntityConflictException("Category with name \" " + name + "\" already exists");

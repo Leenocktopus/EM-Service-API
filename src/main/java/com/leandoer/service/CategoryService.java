@@ -1,17 +1,17 @@
 package com.leandoer.service;
 
-import com.leandoer.entity.dto.CategoryDto;
+import com.leandoer.entity.model.CategoryModel;
 
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryDto> getAllCategories();
+    List<CategoryModel> getAllCategories();
 
-    CategoryDto addCategory(CategoryDto category);
+    CategoryModel addCategory(CategoryModel category);
 
-    CategoryDto getOneCategory(long id);
+    CategoryModel getOneCategory(long id);
 
-    CategoryDto modifyCategory(long id, CategoryDto category);
+    CategoryModel modifyCategory(long id, CategoryModel category);
 
-    CategoryDto deleteCategory(long id);
+    CategoryModel deleteCategory(long id);
 }

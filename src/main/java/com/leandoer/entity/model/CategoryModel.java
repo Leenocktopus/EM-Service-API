@@ -1,21 +1,22 @@
-package com.leandoer.entity.dto;
+package com.leandoer.entity.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.leandoer.entity.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class CategoryDto {
+@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+public class CategoryModel extends RepresentationModel<CategoryModel> {
     private long id;
     private String name;
 
-    public CategoryDto(Category category) {
+    public CategoryModel(Category category) {
         this.id = category.getId();
         this.name = category.getName();
     }
