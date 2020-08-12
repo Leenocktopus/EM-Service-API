@@ -1,9 +1,10 @@
 package com.leandoer.exception;
 
-public class IllegalEntityException extends RuntimeException {
+import lombok.Getter;
 
-    public IllegalEntityException() {
-    }
+@Getter
+public class IllegalEntityException extends EntityException {
+    final int code = 103;
 
     public IllegalEntityException(String message) {
         super(message);

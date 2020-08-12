@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
 public class ProductCommentModel extends RepresentationModel<ProductCommentModel> {
 
-    private long id;
+    private Long id;
     private String user;
     private Score score;
     private String text;

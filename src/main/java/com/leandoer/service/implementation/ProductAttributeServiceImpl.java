@@ -60,8 +60,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
         selected.setProduct(id);
         selected.setName(attribute.getName());
         selected.setValue(attribute.getValue());
-        productAttributeRepository.save(selected);
-        return new ProductAttributeModel(selected);
+        return new ProductAttributeModel(productAttributeRepository.save(selected));
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.leandoer.service.implementation;
 import com.leandoer.entity.Manufacturer;
 import com.leandoer.entity.model.ManufacturerModel;
 import com.leandoer.exception.EntityConflictException;
+import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.repository.ManufacturerRepository;
 import com.leandoer.service.ManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,14 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     @Override
     public ManufacturerModel addManufacturer(ManufacturerModel manufacturer) {
         checkForDuplicate(manufacturer);
-        manufacturerRepository.save(manufacturer.toManufacturer());
-        return new ManufacturerModel(manufacturerRepository.findByName(manufacturer.getName())
-                .orElseThrow(RuntimeException::new));
+        return new ManufacturerModel(manufacturerRepository.save(manufacturer.toManufacturer()));
     }
 
     @Override
     public ManufacturerModel getOneManufacturer(long id) {
         return new ManufacturerModel(manufacturerRepository.findById(id)
-                .orElseThrow(RuntimeException::new));
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Manufacturer with id '" + id + "' has not been found")));
     }
 
     @Override
@@ -46,13 +46,13 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         checkForDuplicate(manufacturer);
         Manufacturer selected = manufacturerRepository.findById(id).orElse(new Manufacturer());
         selected.setName(manufacturer.getName());
-        manufacturerRepository.save(selected);
-        return new ManufacturerModel(selected);
+        return new ManufacturerModel(manufacturerRepository.save(selected));
     }
 
     @Override
     public ManufacturerModel deleteManufacturer(long id) {
-        Manufacturer selected = manufacturerRepository.findById(id).orElseThrow(RuntimeException::new);
+        Manufacturer selected = manufacturerRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Manufacturer with id '" + id + "' has not been found"));
         manufacturerRepository.delete(selected);
         return new ManufacturerModel(selected);
     }
@@ -60,7 +60,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     private void checkForDuplicate(ManufacturerModel manufacturer) {
         String name = manufacturer.getName();
         if (manufacturerRepository.existsByName(name)) {
-            throw new EntityConflictException("Manufacturer with name \" " + name + "\" already exists");
+            throw new EntityConflictException("Manufacturer with name '" + name + "' already exists");
         }
     }
 }

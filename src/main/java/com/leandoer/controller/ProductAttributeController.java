@@ -8,8 +8,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductAttributeController {
@@ -24,33 +22,33 @@ public class ProductAttributeController {
     }
 
     @GetMapping("/{productId}/attributes")
-    public CollectionModel<RepresentationModel<ProductAttributeModel>> getAllProductAttributes(@PathVariable("productId") long productId) {
+    public CollectionModel<RepresentationModel<ProductAttributeModel>> getAllProductAttributes(@PathVariable("productId") Long productId) {
         return assembler.toCollectionModel(productAttributeService.getAllProductAttributes(productId), productId);
     }
 
 
     @PostMapping("/{productId}/attributes")
-    public RepresentationModel<ProductAttributeModel> addProductAttribute(@PathVariable("productId") long productId,
+    public RepresentationModel<ProductAttributeModel> addProductAttribute(@PathVariable("productId") Long productId,
                                                                           @RequestBody ProductAttributeModel attribute) {
         return assembler.toModel(productAttributeService.addProductAttribute(productId, attribute));
     }
 
     @GetMapping("/{productId}/attributes/{attributeId}")
-    public RepresentationModel<ProductAttributeModel> getProductAttribute(@PathVariable("productId") long productId,
-                                              @PathVariable("attributeId") long attributeId) {
+    public RepresentationModel<ProductAttributeModel> getProductAttribute(@PathVariable("productId") Long productId,
+                                                                          @PathVariable("attributeId") Long attributeId) {
         return assembler.toModel(productAttributeService.getProductAttribute(productId, attributeId));
     }
 
     @PutMapping("/{productId}/attributes/{attributeId}")
-    public RepresentationModel<ProductAttributeModel> modifyProductAttribute(@PathVariable("productId") long productId,
-                                                 @PathVariable("attributeId") long attributeId,
-                                                 @RequestBody ProductAttributeModel attribute) {
+    public RepresentationModel<ProductAttributeModel> modifyProductAttribute(@PathVariable("productId") Long productId,
+                                                                             @PathVariable("attributeId") Long attributeId,
+                                                                             @RequestBody ProductAttributeModel attribute) {
         return assembler.toModel(productAttributeService.modifyProductAttribute(productId, attributeId, attribute));
     }
 
     @DeleteMapping("/{productId}/attributes/{attributeId}")
-    public RepresentationModel<ProductAttributeModel> addProductAttribute(@PathVariable("productId") long productId,
-                                              @PathVariable("attributeId") long attributeId) {
+    public RepresentationModel<ProductAttributeModel> addProductAttribute(@PathVariable("productId") Long productId,
+                                                                          @PathVariable("attributeId") Long attributeId) {
         return assembler.toModel(productAttributeService.deleteProductAttribute(productId, attributeId));
     }
 

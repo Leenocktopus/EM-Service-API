@@ -4,13 +4,10 @@ import com.leandoer.controller.MainController;
 import com.leandoer.controller.ProductAttributeController;
 import com.leandoer.controller.ProductCommentController;
 import com.leandoer.controller.ProductController;
-import com.leandoer.entity.ProductAttribute;
 import com.leandoer.entity.model.ProductModel;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -24,7 +21,6 @@ public class ProductAssembler implements RepresentationModelAssembler<ProductMod
     public RepresentationModel<ProductModel> toModel(ProductModel product) {
         product.add(
                 linkTo(methodOn(ProductController.class).getProduct(product.getId())).withSelfRel(),
-                linkTo(methodOn(ProductController.class).getAllProducts(null, new PagedResourcesAssembler(null, null))).withRel("products"),
                 linkTo(methodOn(ProductAttributeController.class).getAllProductAttributes(product.getId())).withRel("attributes"),
                 linkTo(methodOn(ProductCommentController.class).getAllProductComments(product.getId(), null, new PagedResourcesAssembler<>(null, null))).withRel("comments")
         );

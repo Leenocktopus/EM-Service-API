@@ -1,9 +1,10 @@
 package com.leandoer.exception;
 
-public class EntityNotFoundException extends RuntimeException {
+import lombok.Getter;
 
-    public EntityNotFoundException() {
-    }
+@Getter
+public class EntityNotFoundException extends EntityException {
+    final int code = 102;
 
     public EntityNotFoundException(String message) {
         super(message);

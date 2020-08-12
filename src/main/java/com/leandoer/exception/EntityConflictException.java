@@ -1,11 +1,14 @@
 package com.leandoer.exception;
 
-public class EntityConflictException extends RuntimeException {
+import lombok.Getter;
 
-    public EntityConflictException() {
-    }
+@Getter
+public class EntityConflictException extends EntityException {
+    final int code = 101;
 
     public EntityConflictException(String message) {
         super(message);
     }
+
+
 }

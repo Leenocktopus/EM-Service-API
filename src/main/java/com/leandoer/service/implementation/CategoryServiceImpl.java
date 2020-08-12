@@ -3,6 +3,7 @@ package com.leandoer.service.implementation;
 import com.leandoer.entity.Category;
 import com.leandoer.entity.model.CategoryModel;
 import com.leandoer.exception.EntityConflictException;
+import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.repository.CategoryRepository;
 import com.leandoer.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,23 +25,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryModel> getAllCategories() {
-        List<CategoryModel> result = categoryRepository.findAll().stream()
+        return categoryRepository.findAll().stream()
                 .map(CategoryModel::new)
                 .collect(Collectors.toList());
-        return result;
     }
 
 
     @Override
     public CategoryModel addCategory(CategoryModel category) {
         checkForDuplicate(category);
-        categoryRepository.save(category.toCategory());
-        return new CategoryModel(categoryRepository.findByName(category.getName()).orElseThrow(RuntimeException::new));
+        return new CategoryModel(categoryRepository.save(category.toCategory()));
     }
 
     @Override
     public CategoryModel getOneCategory(long id) {
-        return new CategoryModel(categoryRepository.findById(id).orElseThrow(RuntimeException::new));
+        return new CategoryModel(categoryRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Category with id '" + id + "' has not been found")));
     }
 
     @Override
@@ -48,13 +48,14 @@ public class CategoryServiceImpl implements CategoryService {
         checkForDuplicate(category);
         Category selected = categoryRepository.findById(id).orElse(new Category());
         selected.setName(category.getName());
-        categoryRepository.save(selected);
-        return new CategoryModel(selected);
+
+        return new CategoryModel(categoryRepository.save(selected));
     }
 
     @Override
     public CategoryModel deleteCategory(long id) {
-        Category category = categoryRepository.findById(id).orElseThrow(RuntimeException::new);
+        Category category = categoryRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Category with id '" + id + "' has not been found"));
         categoryRepository.delete(category);
         return new CategoryModel(category);
     }
@@ -62,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
     private void checkForDuplicate(CategoryModel category) {
         String name = category.getName();
         if (categoryRepository.existsByName(name)) {
-            throw new EntityConflictException("Category with name \" " + name + "\" already exists");
+            throw new EntityConflictException("Category with name '" + name + "' already exists");
         }
     }
 }

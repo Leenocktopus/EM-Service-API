@@ -13,7 +13,7 @@ import org.springframework.hateoas.RepresentationModel;
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
 public class ManufacturerModel extends RepresentationModel<ManufacturerModel> {
-    private long id;
+    private Long id;
     private String name;
 
     public ManufacturerModel(Manufacturer manufacturer) {

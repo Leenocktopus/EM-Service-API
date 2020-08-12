@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
 public class OrderModel extends RepresentationModel<OrderModel> {
-    private long id;
+    private Long id;
     private String customerName;
     private String customerPhone;
     private String customerEmail;

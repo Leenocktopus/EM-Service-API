@@ -11,8 +11,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("api/v1/orders")
 public class OrderController {
@@ -38,17 +36,17 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public RepresentationModel<OrderModel> getOneOrder(@PathVariable("id") long id) {
+    public RepresentationModel<OrderModel> getOneOrder(@PathVariable("id") Long id) {
         return assembler.toModel(orderService.getOneOrder(id));
     }
 
     @PutMapping("/{id}")
-    public RepresentationModel<OrderModel> modifyOrder(@PathVariable("id") long id, @RequestBody OrderModel order) {
+    public RepresentationModel<OrderModel> modifyOrder(@PathVariable("id") Long id, @RequestBody OrderModel order) {
         return assembler.toModel(orderService.modifyOrder(id, order));
     }
 
     @DeleteMapping("/{id}")
-    public RepresentationModel<OrderModel> deleteOrder(@PathVariable("id") long id) {
+    public RepresentationModel<OrderModel> deleteOrder(@PathVariable("id") Long id) {
         return assembler.toModel(orderService.deleteOrder(id));
     }
 }

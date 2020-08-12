@@ -31,8 +31,8 @@ public class OrderServiceImpl implements OrderService {
         if (orderRepository.existsById(order.getId())) {
             throw new RuntimeException();
         }
-        orderRepository.save(order.toOrder());
-        return order;
+
+        return new OrderModel(orderRepository.save(order.toOrder()));
     }
 
     @Override
@@ -52,7 +52,8 @@ public class OrderServiceImpl implements OrderService {
         selected.setDate(order.getDate());
         selected.setOrderStatus(order.getOrderStatus());
         selected.setProducts(order.getProducts());
-        return orderDto;
+
+        return new OrderModel(orderRepository.save(order));
     }
 
     @Override

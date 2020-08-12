@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
 public class OrderProductModel {
-    int quantity;
-    ProductModel product = new ProductModel();
+    private int quantity;
+    private ProductModel product = new ProductModel();
 
     public OrderProductModel(OrderProduct orderProduct) {
         this.quantity = orderProduct.getQuantity();

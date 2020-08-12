@@ -1,4 +1,5 @@
 /.idea
 /target
 src/main/resources/static/images
+static/images/*
 *.iml

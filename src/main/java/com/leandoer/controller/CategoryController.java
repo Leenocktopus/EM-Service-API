@@ -6,8 +6,6 @@ import com.leandoer.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,17 +31,17 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public RepresentationModel<CategoryModel> getOneCategory(@PathVariable("id") long id) {
+    public RepresentationModel<CategoryModel> getOneCategory(@PathVariable("id") Long id) {
         return assembler.toModel(categoryService.getOneCategory(id));
     }
 
     @PutMapping("/{id}")
-    public RepresentationModel<CategoryModel> modifyCategory(@PathVariable("id") long id, @RequestBody CategoryModel category) {
+    public RepresentationModel<CategoryModel> modifyCategory(@PathVariable("id") Long id, @RequestBody CategoryModel category) {
         return assembler.toModel(categoryService.modifyCategory(id, category));
     }
 
     @DeleteMapping("/{id}")
-    public RepresentationModel<CategoryModel> deleteCategory(@PathVariable("id") long id) {
+    public RepresentationModel<CategoryModel> deleteCategory(@PathVariable("id") Long id) {
         return assembler.toModel(categoryService.deleteCategory(id));
     }
 

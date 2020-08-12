@@ -11,10 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class ProductCommentServiceImpl implements ProductCommentService {
 
@@ -39,8 +35,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
         id.setId(productId);
         ProductComment entity = comment.toProductComment();
         entity.setProduct(id);
-        productCommentRepository.save(entity);
-        return comment;
+        return new ProductCommentModel(productCommentRepository.save(entity));
     }
 
     @Override
@@ -63,8 +58,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
         Product id = new Product();
         id.setId(productId);
         selected.setProduct(id);
-        productCommentRepository.save(selected);
-        return new ProductCommentModel(selected);
+        return new ProductCommentModel(productCommentRepository.save(selected));
     }
 
     @Override

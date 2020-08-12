@@ -23,6 +23,15 @@ CREATE TABLE categories
 (
     id bigint NOT NULL AUTO_INCREMENT,
     name   varchar(30) UNIQUE,
+    parent bigint,
+    CONSTRAINT PRIMARY KEY (id)
+);
+
+CREATE TABLE images
+(
+    id bigint NOT NULL AUTO_INCREMENT,
+    prod_id   bigint NOT NULL,
+    image varchar(50) NOT NULL,
     CONSTRAINT PRIMARY KEY (id)
 );
 
@@ -74,6 +83,14 @@ ALTER TABLE products
 ALTER TABLE products
     ADD CONSTRAINT products_categories_fk
         FOREIGN KEY (cat_id) REFERENCES categories (id);
+
+ALTER TABLE categories
+    ADD CONSTRAINT categories_categories_fk
+        FOREIGN KEY (parent) REFERENCES categories (id);
+
+ALTER TABLE images
+    ADD CONSTRAINT images_product_fk
+        FOREIGN KEY (prod_id) REFERENCES products (id);
 
 ALTER TABLE product_attributes
     ADD CONSTRAINT attributes_products_fk

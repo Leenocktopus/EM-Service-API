@@ -7,9 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -44,13 +42,10 @@ public class Product extends BaseEntity {
     @Column(name = "total_score")
     private float totalScore;
 
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private Set<Image> images = new HashSet<>();
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private Set<ProductAttribute> productAttributes = new HashSet<>();
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
-    private Set<ProductComment> productComments = new HashSet<>();
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderProduct> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private Set<OrderProduct> orders = new HashSet<>();
 }

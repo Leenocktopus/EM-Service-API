@@ -1,6 +1,5 @@
 package com.leandoer.assembler;
 
-import com.leandoer.controller.CategoryController;
 import com.leandoer.controller.MainController;
 import com.leandoer.controller.OrderController;
 import com.leandoer.entity.model.OrderModel;
@@ -19,8 +18,7 @@ public class OrderAssembler implements RepresentationModelAssembler<OrderModel, 
     @Override
     public RepresentationModel<OrderModel> toModel(OrderModel order) {
         order.add(
-                linkTo(methodOn(OrderController.class).getOneOrder(order.getId())).withSelfRel(),
-                linkTo(methodOn(OrderController.class).getAllOrders(null, new PagedResourcesAssembler<>(null, null))).withRel("orders")
+                linkTo(methodOn(OrderController.class).getOneOrder(order.getId())).withSelfRel()
         );
         return order;
     }

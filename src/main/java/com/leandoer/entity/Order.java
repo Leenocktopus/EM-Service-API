@@ -7,9 +7,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -37,7 +37,7 @@ public class Order extends BaseEntity {
     private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderProduct> products = new ArrayList<>();
+    private Set<OrderProduct> products = new HashSet<>();
 
 
     public void addProduct(Product product, int quantity) {

@@ -9,8 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,17 +37,17 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public RepresentationModel<ProductModel> getProduct(@PathVariable long id) {
+    public RepresentationModel<ProductModel> getProduct(@PathVariable Long id) {
         return assembler.toModel(productService.getProductById(id));
     }
 
     @PutMapping("/{id}")
-    public RepresentationModel<ProductModel> modifyProduct(@PathVariable long id, @RequestBody ProductModel product) {
+    public RepresentationModel<ProductModel> modifyProduct(@PathVariable Long id, @RequestBody ProductModel product) {
         return assembler.toModel(productService.modifyProduct(id, product));
     }
 
     @DeleteMapping("/{id}")
-    public RepresentationModel<ProductModel> deleteProduct(@PathVariable long id) {
+    public RepresentationModel<ProductModel> deleteProduct(@PathVariable Long id) {
         return assembler.toModel(productService.deleteProduct(id));
     }
 

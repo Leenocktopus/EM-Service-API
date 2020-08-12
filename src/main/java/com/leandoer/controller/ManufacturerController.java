@@ -8,8 +8,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("api/v1/manufacturers")
 public class ManufacturerController {
@@ -34,17 +32,17 @@ public class ManufacturerController {
     }
 
     @GetMapping("/{id}")
-    public RepresentationModel<ManufacturerModel> getOneManufacturer(@PathVariable("id") long id) {
+    public RepresentationModel<ManufacturerModel> getOneManufacturer(@PathVariable("id") Long id) {
         return assembler.toModel(manufacturerService.getOneManufacturer(id));
     }
 
     @PutMapping("/{id}")
-    public RepresentationModel<ManufacturerModel> modifyManufacturer(@PathVariable("id") long id, @RequestBody ManufacturerModel manufacturer) {
+    public RepresentationModel<ManufacturerModel> modifyManufacturer(@PathVariable("id") Long id, @RequestBody ManufacturerModel manufacturer) {
         return assembler.toModel(manufacturerService.modifyManufacturer(id, manufacturer));
     }
 
     @DeleteMapping("/{id}")
-    public RepresentationModel<ManufacturerModel> deleteManufacturer(@PathVariable("id") long id) {
+    public RepresentationModel<ManufacturerModel> deleteManufacturer(@PathVariable("id") Long id) {
         return assembler.toModel(manufacturerService.deleteManufacturer(id));
     }
 }

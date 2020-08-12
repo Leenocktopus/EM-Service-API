@@ -5,8 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "manufacturers")
@@ -17,8 +18,4 @@ public class Manufacturer extends BaseEntity {
 
     @Column(name = "name")
     private String name;
-
-    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY)
-    private Set<Product> productSet;
-
 }

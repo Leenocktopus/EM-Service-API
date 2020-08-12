@@ -3,7 +3,6 @@ package com.leandoer.entity.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.leandoer.entity.Product;
 import com.leandoer.entity.ProductAttribute;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,7 @@ import org.springframework.hateoas.RepresentationModel;
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
 public class ProductAttributeModel extends RepresentationModel<ProductAttributeModel> {
-    private long id;
+    private Long id;
     private String name;
     private String value;
     @JsonIgnore
@@ -33,9 +32,6 @@ public class ProductAttributeModel extends RepresentationModel<ProductAttributeM
         productAttribute.setId(id);
         productAttribute.setName(this.name);
         productAttribute.setValue(this.value);
-        Product product = new Product();
-        product.setId(productId);
-        productAttribute.setProduct(product);
         return productAttribute;
     }
 }

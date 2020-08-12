@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,7 +18,10 @@ public class Category extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private Set<Product> productSet;
+    @OneToOne
+    @JoinColumn(name = "parent")
+    private Category parent;
 
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Category> subCategories = new HashSet<>();
 }

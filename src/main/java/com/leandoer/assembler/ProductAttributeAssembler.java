@@ -1,14 +1,12 @@
 package com.leandoer.assembler;
 
-import com.leandoer.controller.*;
+import com.leandoer.controller.ProductAttributeController;
+import com.leandoer.controller.ProductController;
 import com.leandoer.entity.model.ProductAttributeModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
-
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -29,8 +27,7 @@ public class ProductAttributeAssembler implements RepresentationModelAssembler<P
     public CollectionModel<RepresentationModel<ProductAttributeModel>> toCollectionModel(Iterable<? extends ProductAttributeModel> attributes, long productId) {
         return RepresentationModelAssembler.super.toCollectionModel(attributes)
                 .add(
-                        linkTo(methodOn(ProductController.class).getProduct(productId)).withRel("product"),
-                        linkTo(methodOn(MainController.class).root()).withRel("root")
+                        linkTo(methodOn(ProductController.class).getProduct(productId)).withRel("product")
                 );
     }
 }
