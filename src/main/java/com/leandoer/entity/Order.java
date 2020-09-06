@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 @Entity
-@Table(name = "orders")
+@Table(schema = "ecommerce", name = "orders")
 @Setter
 @Getter
 @ToString

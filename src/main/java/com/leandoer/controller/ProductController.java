@@ -28,8 +28,10 @@ public class ProductController {
     @GetMapping
     public CollectionModel<RepresentationModel<ProductModel>> getAllProducts(@PageableDefault Pageable pageable,
                                                                              PagedResourcesAssembler<ProductModel> pagedResourcesAssembler) {
+
         return assembler.toCollectionModel(productService.getAllProducts(pageable), pagedResourcesAssembler);
     }
+
 
     @PostMapping
     public RepresentationModel<ProductModel> addProduct(@RequestBody ProductModel product) {
@@ -41,10 +43,12 @@ public class ProductController {
         return assembler.toModel(productService.getProductById(id));
     }
 
+
     @PutMapping("/{id}")
     public RepresentationModel<ProductModel> modifyProduct(@PathVariable Long id, @RequestBody ProductModel product) {
         return assembler.toModel(productService.modifyProduct(id, product));
     }
+
 
     @DeleteMapping("/{id}")
     public RepresentationModel<ProductModel> deleteProduct(@PathVariable Long id) {

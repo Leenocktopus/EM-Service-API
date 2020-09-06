@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 
 
 @Entity
-@Table(name = "product_comments")
+@Table(schema = "ecommerce", name = "product_comments")
 @Setter
 @Getter
 @ToString

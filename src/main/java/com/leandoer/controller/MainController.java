@@ -20,6 +20,7 @@ public class MainController {
 
     @GetMapping
     public ResponseEntity<BaseModel> root(){
+
         BaseModel model = new BaseModel("Welcome to e-commerce API");
         model.add(
                 linkTo(methodOn(MainController.class).root()).withSelfRel(),
@@ -30,11 +31,11 @@ public class MainController {
         );
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
+
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class BaseModel extends RepresentationModel<BaseModel>{
+    public static class BaseModel extends RepresentationModel<BaseModel> {
         String title;
-
     }
 }

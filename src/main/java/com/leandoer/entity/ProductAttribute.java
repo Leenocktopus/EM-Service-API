@@ -7,7 +7,7 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "product_attributes")
+@Table(schema = "ecommerce", name = "product_attributes")
 @Setter
 @Getter
 @ToString

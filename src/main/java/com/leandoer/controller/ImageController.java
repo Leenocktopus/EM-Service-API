@@ -39,7 +39,6 @@ public class ImageController {
         return assembler.toModel(imageService.addImage(productId, image));
     }
 
-
     @DeleteMapping("/{productId}/images/{imageId}")
     public RepresentationModel<ImageModel> deleteImage(@PathVariable("productId") Long productId,
                                                        @PathVariable("imageId") Long imageId) {

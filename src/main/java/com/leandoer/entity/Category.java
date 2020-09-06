@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "categories")
+@Table(schema = "ecommerce", name = "categories")
 @Setter
 @Getter
 @ToString
@@ -22,6 +22,6 @@ public class Category extends BaseEntity {
     @JoinColumn(name = "parent")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
     private Set<Category> subCategories = new HashSet<>();
 }

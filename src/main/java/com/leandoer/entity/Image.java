@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true, exclude = {"product"})
-@Table(name = "images")
+@Table(schema = "ecommerce", name = "images")
 public class Image extends BaseEntity {
 
     @Column(name = "image")

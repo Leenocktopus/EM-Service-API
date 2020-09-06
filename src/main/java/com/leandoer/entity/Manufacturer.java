@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "manufacturers")
+@Table(schema = "ecommerce", name = "manufacturers")
 @Setter
 @Getter
 @ToString

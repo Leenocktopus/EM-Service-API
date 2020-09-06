@@ -26,7 +26,6 @@ public class ProductAttributeController {
         return assembler.toCollectionModel(productAttributeService.getAllProductAttributes(productId), productId);
     }
 
-
     @PostMapping("/{productId}/attributes")
     public RepresentationModel<ProductAttributeModel> addProductAttribute(@PathVariable("productId") Long productId,
                                                                           @RequestBody ProductAttributeModel attribute) {

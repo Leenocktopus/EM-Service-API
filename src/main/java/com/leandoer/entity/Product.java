@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "products")
+@Table(schema = "ecommerce", name = "products")
 @Setter
 @Getter
 @ToString

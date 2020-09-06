@@ -1,29 +1,23 @@
-package com.leandoer.controller;
+package com.leandoer.exception;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.leandoer.exception.EntityConflictException;
-import com.leandoer.exception.EntityException;
-import com.leandoer.exception.EntityNotFoundException;
-import com.leandoer.exception.IllegalEntityException;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.leandoer.controller.MainController;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @ControllerAdvice
@@ -39,26 +33,16 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
         e.add(
                 new Link(UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(webRequest.getRequest())).toUriString()).withSelfRel(),
-                linkTo(methodOn(MainController.class).root()).withRel("root")
+                WebMvcLinkBuilder.linkTo(methodOn(MainController.class).root()).withRel("root")
 
         );
-        System.out.println(e);
-        return new ResponseEntity<>(
-                e,
-                HttpStatus.OK
-        );
+        return new ResponseEntity<>(e, HttpStatus.OK);
     }
 
 
-    @Builder
-    @ToString
-    @Getter
-    @Setter
-    static class ErrorEntity extends RepresentationModel<ErrorEntity> {
-        private int errorCode;
-        private String errorText;
-        private String meassage;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-        private ZonedDateTime timestamp;
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return super.handleHttpMessageNotReadable(ex, headers, status, request);
     }
+
 }
