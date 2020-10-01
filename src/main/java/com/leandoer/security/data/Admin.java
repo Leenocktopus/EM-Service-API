@@ -1,5 +1,6 @@
 package com.leandoer.security.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,9 +23,11 @@ public class Admin {
     private String email;
     @Column(name = "username")
     private String username;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password")
     private String password;
-
+    @Column(name = "version")
+    private Integer version;
 
     public Admin() {
     }

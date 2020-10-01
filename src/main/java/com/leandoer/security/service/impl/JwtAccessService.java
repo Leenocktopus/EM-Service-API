@@ -1,5 +1,7 @@
-package com.leandoer.security.service;
+package com.leandoer.security.service.impl;
 
+import com.leandoer.security.data.JwtAdmin;
+import com.leandoer.security.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -15,7 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.function.Function;
 
-@Service("JwtAccessService")
+@Service
 @PropertySource("classpath:security.properties")
 public class JwtAccessService extends JwtService {
 
@@ -31,7 +33,7 @@ public class JwtAccessService extends JwtService {
     }
 
     @Override
-    public String generateToken(String principal, Collection<? extends GrantedAuthority> authorities) {
+    public String generateToken(JwtAdmin principal, Collection<? extends GrantedAuthority> authorities) {
         return super.generateStub(principal, authorities)
                 .setExpiration(Timestamp.valueOf(LocalDateTime.now().plus(accessExpirationTimeInSec, ChronoUnit.SECONDS)))
                 .signWith(SignatureAlgorithm.HS512, jwtAccessSecret)

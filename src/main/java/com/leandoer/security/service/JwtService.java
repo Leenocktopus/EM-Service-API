@@ -1,5 +1,6 @@
 package com.leandoer.security.service;
 
+import com.leandoer.security.data.JwtAdmin;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtBuilder;
@@ -20,26 +21,31 @@ import java.util.stream.Collectors;
 @PropertySource("classpath:security.properties")
 public abstract class JwtService {
 
-    public abstract <T> T extractClaim(String token, Function<Claims, T> claimsTFunction) throws ExpiredJwtException;
+	public abstract <T> T extractClaim(String token, Function<Claims, T> claimsTFunction) throws ExpiredJwtException;
 
-    public abstract String generateToken(String principal, Collection<? extends GrantedAuthority> authorities);
+	public abstract String generateToken(JwtAdmin principal, Collection<? extends GrantedAuthority> authorities);
 
-    public String getUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
+	public String getUsername(String token) {
+		return extractClaim(token, Claims::getSubject);
+	}
 
-    public Collection<? extends GrantedAuthority> getAuthorities(String token) {
-        return extractClaim(token, claims -> (List<Map<String, String>>) claims.get("authorities"))
-                .stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.get("authority")))
-                .collect(Collectors.toList());
-    }
+	public String getVersion(String token) {
+		return extractClaim(token, Claims::getId);
+	}
 
-    public JwtBuilder generateStub(String principal, Collection<? extends GrantedAuthority> authorities) {
-        return Jwts.builder()
-                .setSubject(principal)
-                .claim("authorities", authorities);
-    }
+	public Collection<? extends GrantedAuthority> getAuthorities(String token) {
+		return extractClaim(token, claims -> (List<Map<String, String>>) claims.get("authorities"))
+				.stream()
+				.map(authority -> new SimpleGrantedAuthority(authority.get("authority")))
+				.collect(Collectors.toList());
+	}
+
+	protected JwtBuilder generateStub(JwtAdmin principal, Collection<? extends GrantedAuthority> authorities) {
+		return Jwts.builder()
+				.setId(principal.getVersion().toString())
+				.setSubject(principal.getUsername())
+				.claim("authorities", authorities);
+	}
 
     public UsernamePasswordAuthenticationToken getAuthenticationFromToken(String token) throws ExpiredJwtException {
         return new UsernamePasswordAuthenticationToken(getUsername(token), null, getAuthorities(token));

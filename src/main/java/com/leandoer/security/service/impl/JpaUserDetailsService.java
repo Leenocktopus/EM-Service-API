@@ -1,4 +1,4 @@
-package com.leandoer.security.service;
+package com.leandoer.security.service.impl;
 
 import com.leandoer.security.data.Admin;
 import com.leandoer.security.data.JwtAdmin;

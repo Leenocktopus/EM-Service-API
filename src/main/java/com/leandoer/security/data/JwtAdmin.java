@@ -11,7 +11,8 @@ import java.util.Collection;
 public class JwtAdmin implements UserDetails {
     private String username;
     private String password;
-    private Collection<? extends GrantedAuthority> authorities;
+	private Integer version;
+	private Collection<? extends GrantedAuthority> authorities;
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
@@ -21,8 +22,9 @@ public class JwtAdmin implements UserDetails {
     public static JwtAdmin fromAdmin(Admin admin) {
         JwtAdmin jwtAdmin = new JwtAdmin();
         jwtAdmin.setUsername(admin.getUsername());
-        jwtAdmin.setPassword(admin.getPassword());
-        jwtAdmin.setAuthorities(admin.getRole().getGrantedAuthorities());
+	    jwtAdmin.setPassword(admin.getPassword());
+	    jwtAdmin.setVersion(admin.getVersion());
+	    jwtAdmin.setAuthorities(admin.getRole().getGrantedAuthorities());
         jwtAdmin.setAccountNonExpired(true);
         jwtAdmin.setAccountNonLocked(true);
         jwtAdmin.setCredentialsNonExpired(true);
