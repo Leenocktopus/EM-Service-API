@@ -17,11 +17,4 @@ public class Category extends BaseEntity {
 
     @Column(name = "name")
     private String name;
-
-    @OneToOne
-    @JoinColumn(name = "parent")
-    private Category parent;
-
-    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
-    private Set<Category> subCategories = new HashSet<>();
 }
