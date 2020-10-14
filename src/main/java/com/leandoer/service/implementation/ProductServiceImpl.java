@@ -20,8 +20,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductModel> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable).map(ProductModel::new);
+    public Page<ProductModel> getAllProducts(Pageable pageable, String searchString) {
+
+        return (searchString == null || searchString.isEmpty() ?
+                productRepository.findAll(pageable) : productRepository.findAllByKeyword(pageable, searchString))
+                .map(ProductModel::new);
     }
 
     @Override

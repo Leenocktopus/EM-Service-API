@@ -24,7 +24,7 @@ public class MainController {
         BaseModel model = new BaseModel("Welcome to e-commerce API");
         model.add(
                 linkTo(methodOn(MainController.class).root()).withSelfRel(),
-                linkTo(methodOn(ProductController.class).getAllProducts(null, new PagedResourcesAssembler<>(null, null))).withRel("products"),
+                linkTo(methodOn(ProductController.class).getAllProducts(null, new PagedResourcesAssembler<>(null, null), null)).withRel("products"),
                 linkTo(methodOn(CategoryController.class).getAllCategories()).withRel("categories"),
                 linkTo(methodOn(ManufacturerController.class).getAllManufacturers()).withRel("manufacturers"),
                 linkTo(methodOn(OrderController.class).getAllOrders(null, null)).withRel("orders")

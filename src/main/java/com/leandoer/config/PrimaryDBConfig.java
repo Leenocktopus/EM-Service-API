@@ -40,7 +40,7 @@ public class PrimaryDBConfig {
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         return em;
     }
-
+    @Primary
     @Bean
     public PlatformTransactionManager primaryTransactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();

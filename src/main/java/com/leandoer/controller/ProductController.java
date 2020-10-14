@@ -27,9 +27,10 @@ public class ProductController {
 
     @GetMapping
     public CollectionModel<RepresentationModel<ProductModel>> getAllProducts(@PageableDefault Pageable pageable,
-                                                                             PagedResourcesAssembler<ProductModel> pagedResourcesAssembler) {
+                                                                             PagedResourcesAssembler<ProductModel> pagedResourcesAssembler,
+                                                                             @RequestParam(value = "search", required = false) String searchString) {
 
-        return assembler.toCollectionModel(productService.getAllProducts(pageable), pagedResourcesAssembler);
+        return assembler.toCollectionModel(productService.getAllProducts(pageable, searchString), pagedResourcesAssembler);
     }
 
 
