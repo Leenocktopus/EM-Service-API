@@ -15,14 +15,14 @@ CREATE TABLE products
 CREATE TABLE manufacturers
 (
     id bigint NOT NULL AUTO_INCREMENT,
-    name     varchar(30) UNIQUE,
+    name     varchar(30) CHARACTER SET utf8 COLLATE utf8_bin UNIQUE,
     CONSTRAINT PRIMARY KEY (id)
 );
 
 CREATE TABLE categories
 (
     id bigint NOT NULL AUTO_INCREMENT,
-    name   varchar(30) UNIQUE,
+    name   varchar(30) CHARACTER SET utf8 COLLATE utf8_bin UNIQUE,
     parent bigint,
     CONSTRAINT PRIMARY KEY (id)
 );

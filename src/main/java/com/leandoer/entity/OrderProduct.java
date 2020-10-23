@@ -1,8 +1,12 @@
 package com.leandoer.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(schema = "ecommerce", name = "order_product")
@@ -10,7 +14,6 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor
-@EqualsAndHashCode
 public class OrderProduct {
 
     @Column(name = "quantity")
@@ -18,11 +21,11 @@ public class OrderProduct {
     @EmbeddedId
     private OrderProductId id;
     @MapsId("productId")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "prod_id")
     private Product product;
     @MapsId("orderId")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
@@ -32,5 +35,19 @@ public class OrderProduct {
         this.order = order;
         this.quantity = quantity;
         this.id = new OrderProductId(product.getId(), order.getId());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderProduct obj = (OrderProduct) o;
+        return Objects.equals(order, obj.order) &&
+                Objects.equals(product, obj.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(order, product);
     }
 }

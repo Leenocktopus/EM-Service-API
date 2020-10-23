@@ -21,18 +21,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    @Override
-    public Page<OrderModel> getAllOrders(Pageable pageable) {
-        return orderRepository.findAll(pageable).map(OrderModel::new);
-    }
+	@Override
+	public Page<OrderModel> getAllOrders(Pageable pageable, String searchString) {
+		return (searchString == null || searchString.isEmpty() ?
+				orderRepository.findAll(pageable) : orderRepository.findAllByKeyword(pageable, searchString))
+				.map(OrderModel::new);
+
+	}
 
     @Override
     public OrderModel addOrder(OrderModel order) {
-        if (orderRepository.existsById(order.getId())) {
-            throw new RuntimeException();
-        }
-
-        return new OrderModel(orderRepository.save(order.toOrder()));
+	    orderRepository.save(order.toOrder());
+	    return new OrderModel(orderRepository.findById(order.getId()).orElseThrow(RuntimeException::new));
     }
 
     @Override
@@ -51,9 +51,8 @@ public class OrderServiceImpl implements OrderService {
         selected.setCustomerEmail(order.getCustomerEmail());
         selected.setDate(order.getDate());
         selected.setOrderStatus(order.getOrderStatus());
-        selected.setProducts(order.getProducts());
-
-        return new OrderModel(orderRepository.save(order));
+	    orderRepository.save(selected);
+	    return new OrderModel(orderRepository.findById(order.getId()).orElseThrow(RuntimeException::new));
     }
 
     @Override

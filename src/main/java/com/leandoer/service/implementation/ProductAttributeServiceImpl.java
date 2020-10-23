@@ -31,7 +31,7 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
     @Override
     public ProductAttributeModel addProductAttribute(long productId, ProductAttributeModel attribute) {
-        if (productAttributeRepository.existsById(attribute.getId())) {
+        if (attribute.getId()!=null && productAttributeRepository.existsById(attribute.getId())) {
             throw new RuntimeException();
         }
         Product id = new Product();

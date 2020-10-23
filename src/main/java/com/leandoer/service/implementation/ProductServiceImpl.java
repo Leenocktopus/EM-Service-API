@@ -34,11 +34,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductModel addProduct(ProductModel product) {
-        if (productRepository.existsById(product.getId())) {
+        if (product.getId()!=null && productRepository.existsById(product.getId())) {
             throw new RuntimeException();
         }
-        productRepository.save(product.toProduct());
-        return product;
+
+        return getProductById(productRepository.save(product.toProduct()).getId());
     }
 
     @Override

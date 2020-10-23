@@ -1,6 +1,5 @@
 package com.leandoer.entity;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,6 +8,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -16,9 +16,10 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-@EqualsAndHashCode(callSuper = true)
-public class Order extends BaseEntity {
-
+public class Order {
+    @Id
+    @Column(name = "id")
+    Long id;
 
     @Column(name = "cust_name")
     private String customerName;
@@ -36,7 +37,7 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<OrderProduct> products = new HashSet<>();
 
 
@@ -58,4 +59,16 @@ public class Order extends BaseEntity {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order obj = (Order) o;
+        return Objects.equals(getId(), obj.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

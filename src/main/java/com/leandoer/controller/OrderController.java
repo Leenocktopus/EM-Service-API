@@ -25,9 +25,10 @@ public class OrderController {
 
     @GetMapping
     public CollectionModel<RepresentationModel<OrderModel>> getAllOrders(@PageableDefault Pageable pageable,
-                                                                         PagedResourcesAssembler<OrderModel> pagedResourcesAssembler) {
+                                                                         PagedResourcesAssembler<OrderModel> pagedResourcesAssembler,
+                                                                         @RequestParam(value = "search", required = false) String searchString) {
 
-        return assembler.toCollectionModel(orderService.getAllOrders(pageable), pagedResourcesAssembler);
+        return assembler.toCollectionModel(orderService.getAllOrders(pageable, searchString), pagedResourcesAssembler);
     }
 
     @PostMapping

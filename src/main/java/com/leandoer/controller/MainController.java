@@ -27,7 +27,7 @@ public class MainController {
                 linkTo(methodOn(ProductController.class).getAllProducts(null, new PagedResourcesAssembler<>(null, null), null)).withRel("products"),
                 linkTo(methodOn(CategoryController.class).getAllCategories()).withRel("categories"),
                 linkTo(methodOn(ManufacturerController.class).getAllManufacturers()).withRel("manufacturers"),
-                linkTo(methodOn(OrderController.class).getAllOrders(null, null)).withRel("orders")
+                linkTo(methodOn(OrderController.class).getAllOrders(null, null, null)).withRel("orders")
         );
         return new ResponseEntity<>(model, HttpStatus.OK);
     }
