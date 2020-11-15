@@ -16,21 +16,18 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-public class Order {
-    @Id
-    @Column(name = "id")
-    Long id;
+public class Order extends BaseEntity {
 
-    @Column(name = "cust_name")
-    private String customerName;
+	@Column(name = "cust_name")
+	private String customerName;
 
-    @Column(name = "cust_phone")
-    private String customerPhone;
+	@Column(name = "cust_phone")
+	private String customerPhone;
 
-    @Column(name = "cust_email")
-    private String customerEmail;
+	@Column(name = "cust_email")
+	private String customerEmail;
 
-    @Column(name = "order_date")
+	@Column(name = "order_date")
     private Timestamp date;
 
     @Column(name = "order_status")

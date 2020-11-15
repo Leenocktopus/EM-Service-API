@@ -9,7 +9,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -25,18 +29,26 @@ public class ProductCommentController {
     }
 
     @GetMapping("/{productId}/comments")
-    public CollectionModel<RepresentationModel<ProductCommentModel>> getAllProductComments(@PathVariable("productId") Long productId,
-                                                                                   @PageableDefault Pageable pageable,
-                                                                                   PagedResourcesAssembler<ProductCommentModel> pagedResourcesAssembler) {
-        return assembler.toCollectionModel(productCommentService.getAllProductComments(productId, pageable), pagedResourcesAssembler, productId);
-        //assembler.toCollectionModel(productCommentService.getAllProductComments(productId, pageable), pageable, productId, pagedResourcesAssembler)
+    public CollectionModel<RepresentationModel<ProductCommentModel>>
+    getAllProductComments(@PathVariable("productId") Long productId,
+                          @PageableDefault Pageable pageable,
+                          PagedResourcesAssembler<ProductCommentModel> pagedResourcesAssembler) {
+        return assembler.toCollectionModel(
+                productCommentService.getAllProductComments(productId, pageable),
+                pagedResourcesAssembler,
+                productId
+        );
     }
 
 
     @PostMapping("/{productId}/comments")
-    public RepresentationModel<ProductCommentModel> addProductComment(@PathVariable("productId") Long productId,
+    @ResponseStatus(HttpStatus.CREATED)
+    public RepresentationModel<ProductCommentModel> addProductComment(HttpServletResponse response,
+                                                                      @PathVariable("productId") Long productId,
                                                                       @RequestBody ProductCommentModel comment) {
-        return assembler.toModel(productCommentService.addProductComment(productId, comment));
+        RepresentationModel<ProductCommentModel> newProductComment = assembler.toModel(productCommentService.addProductComment(productId, comment));
+        response.addHeader(HttpHeaders.LOCATION, newProductComment.getLink("self").get().getHref());
+        return newProductComment;
     }
 
 
@@ -58,6 +70,5 @@ public class ProductCommentController {
                                                                          @PathVariable("commentId") Long commentId) {
         return assembler.toModel(productCommentService.deleteProductComment(productId, commentId));
     }
-
 
 }

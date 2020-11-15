@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"links"})
 public class OrderModel extends RepresentationModel<OrderModel> {
     private Long id;
     private String customerName;
@@ -23,9 +23,7 @@ public class OrderModel extends RepresentationModel<OrderModel> {
     private String customerEmail;
     private Timestamp date;
     private OrderStatus orderStatus;
-
     private List<OrderProductModel> products;
-
     public OrderModel(Order order) {
         this.id = order.getId();
         this.customerName = order.getCustomerName();
@@ -33,9 +31,7 @@ public class OrderModel extends RepresentationModel<OrderModel> {
         this.customerEmail = order.getCustomerEmail();
         this.date = order.getDate();
         this.orderStatus = order.getOrderStatus();
-        this.products = order.getProducts().stream()
-                .map(OrderProductModel::new)
-                .collect(Collectors.toList());
+        this.products = order.getProducts().stream().map(OrderProductModel::new).collect(Collectors.toList());
     }
 
     public Order toOrder() {
@@ -46,9 +42,6 @@ public class OrderModel extends RepresentationModel<OrderModel> {
         order.setCustomerEmail(this.customerEmail);
         order.setDate(this.date);
         order.setOrderStatus(this.orderStatus);
-        this.products.stream()
-                .map(OrderProductModel::toOrderProduct)
-                .forEach(orderProduct -> order.addProduct(orderProduct.getProduct(), orderProduct.getQuantity()));
         return order;
     }
 

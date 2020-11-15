@@ -27,7 +27,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/users/{username}/profile")
+    @PatchMapping("/users/{username}/profile")
     public Admin changeProfile(@PathVariable("username") String username, @RequestBody Admin admin) {
         Admin user = userRepository
                 .getAdminByUsername(username)
@@ -38,7 +38,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/users/{username}/email")
+    @PatchMapping("/users/{username}/email")
     public Admin changeEmail(@PathVariable("username") String username, @RequestBody Admin admin) {
         Admin user = userRepository
                 .getAdminByUsername(username)
@@ -47,7 +47,7 @@ public class UserController {
         return userRepository.save(user);
     }
 
-    @PutMapping("/users/{username}/password")
+    @PatchMapping("/users/{username}/password")
     public Admin changePassword(@PathVariable("username") String username, @RequestBody Admin admin, @RequestParam("old") String oldPassword) {
         Admin user = userRepository
                 .getAdminByUsername(username)
@@ -66,7 +66,7 @@ public class UserController {
         return userRepository.save(user);
     }
 
-    @PutMapping("/users/{username}/username")
+    @PatchMapping("/users/{username}/username")
     public Admin changeUsername(@PathVariable("username") String username, @RequestBody Admin admin) {
         Admin user = userRepository
                 .getAdminByUsername(username)

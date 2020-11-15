@@ -10,6 +10,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -20,11 +22,12 @@ import java.time.ZonedDateTime;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({EntityConflictException.class, EntityNotFoundException.class, IllegalEntityException.class})
-    public <T extends EntityException> ResponseEntity<ErrorEntity> handleEntityExceptions(T ex, ServletWebRequest webRequest) {
+    @ResponseStatus(HttpStatus.OK)
+    public <T extends EntityException> ErrorEntity handleEntityExceptions(T ex, ServletWebRequest webRequest) {
         ErrorEntity e = ErrorEntity.builder()
                 .errorCode(ex.getCode())
                 .errorText(ex.getClass().getSimpleName())
@@ -36,7 +39,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 WebMvcLinkBuilder.linkTo(methodOn(MainController.class).root()).withRel("root")
 
         );
-        return new ResponseEntity<>(e, HttpStatus.OK);
+        return e;
     }
 
 

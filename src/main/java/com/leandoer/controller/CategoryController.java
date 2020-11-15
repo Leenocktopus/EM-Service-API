@@ -6,7 +6,11 @@ import com.leandoer.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("api/v1/categories")
@@ -26,8 +30,12 @@ public class CategoryController {
     }
 
     @PostMapping
-    public RepresentationModel<CategoryModel> addCategory(@RequestBody CategoryModel category) {
-        return assembler.toModel(categoryService.addCategory(category));
+    @ResponseStatus(HttpStatus.CREATED)
+    public RepresentationModel<CategoryModel> addCategory(HttpServletResponse response,
+                                                          @RequestBody CategoryModel category) {
+        RepresentationModel<CategoryModel> newCategory = assembler.toModel(categoryService.addCategory(category));
+        response.addHeader(HttpHeaders.LOCATION, newCategory.getLink("self").get().getHref());
+        return newCategory;
     }
 
     @GetMapping("/{id}")
@@ -36,7 +44,8 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public RepresentationModel<CategoryModel> modifyCategory(@PathVariable("id") Long id, @RequestBody CategoryModel category) {
+    public RepresentationModel<CategoryModel> modifyCategory(@PathVariable("id") Long id,
+                                                             @RequestBody CategoryModel category) {
         return assembler.toModel(categoryService.modifyCategory(id, category));
     }
 
@@ -44,6 +53,5 @@ public class CategoryController {
     public RepresentationModel<CategoryModel> deleteCategory(@PathVariable("id") Long id) {
         return assembler.toModel(categoryService.deleteCategory(id));
     }
-
 
 }

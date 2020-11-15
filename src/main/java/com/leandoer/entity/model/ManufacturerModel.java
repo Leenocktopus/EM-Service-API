@@ -2,6 +2,7 @@ package com.leandoer.entity.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.leandoer.entity.Manufacturer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import org.springframework.hateoas.RepresentationModel;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"links"})
 public class ManufacturerModel extends RepresentationModel<ManufacturerModel> {
     private Long id;
     private String name;

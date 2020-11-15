@@ -1,5 +1,6 @@
 /.idea
 /target
-src/main/resources/static/images
 static/images/*
 *.iml
+src/main/resources/sql
+src/test/

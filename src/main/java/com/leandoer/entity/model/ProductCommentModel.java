@@ -2,6 +2,7 @@ package com.leandoer.entity.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.leandoer.entity.Product;
 import com.leandoer.entity.ProductComment;
 import com.leandoer.entity.Score;
@@ -11,16 +12,16 @@ import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"links"})
 public class ProductCommentModel extends RepresentationModel<ProductCommentModel> {
-
     private Long id;
     private String user;
-    private Score score;
+    private Integer score;
     private String text;
     private Timestamp date;
     @JsonIgnore
@@ -29,7 +30,7 @@ public class ProductCommentModel extends RepresentationModel<ProductCommentModel
     public ProductCommentModel(ProductComment productComment) {
         this.id = productComment.getId();
         this.user = productComment.getUser();
-        this.score = productComment.getScore();
+        this.score = productComment.getScore().getNumericValue();
         this.text = productComment.getText();
         this.date = productComment.getDate();
         this.productId = productComment.getProduct().getId();
@@ -39,7 +40,9 @@ public class ProductCommentModel extends RepresentationModel<ProductCommentModel
         ProductComment productComment = new ProductComment();
         productComment.setId(id);
         productComment.setUser(user);
-        productComment.setScore(score);
+        productComment.setScore(Arrays.stream(Score.values())
+                .filter(value -> value.getNumericValue() == score)
+                .findFirst().orElseThrow(RuntimeException::new));
         productComment.setText(text);
         productComment.setDate(date);
         Product product = new Product();

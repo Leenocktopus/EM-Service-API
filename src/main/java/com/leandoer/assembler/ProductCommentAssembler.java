@@ -18,7 +18,8 @@ public class ProductCommentAssembler implements RepresentationModelAssembler<Pro
     @Override
     public RepresentationModel<ProductCommentModel> toModel(ProductCommentModel comment) {
         return comment.add(
-                linkTo(methodOn(ProductCommentController.class).getProductComment(comment.getProductId(), comment.getId())).withSelfRel()
+                linkTo(methodOn(ProductCommentController.class).getProductComment(comment.getProductId(), comment.getId())).withSelfRel(),
+                linkTo(methodOn(ProductCommentController.class).getAllProductComments(comment.getProductId(), null, null)).withRel("comments").expand()
         );
     }
 
@@ -30,7 +31,6 @@ public class ProductCommentAssembler implements RepresentationModelAssembler<Pro
 
         return pagedResourcesAssembler.toModel(comments, this).add(
                 linkTo(methodOn(ProductController.class).getProduct(productId)).withRel("product")
-
         );
 
 

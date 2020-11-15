@@ -6,7 +6,11 @@ import com.leandoer.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("api/v1/products/")
@@ -24,7 +28,7 @@ public class ImageController {
 
     @GetMapping("/{productId}/images")
     public CollectionModel<RepresentationModel<ImageModel>> getAllImages(@PathVariable("productId") Long productId) {
-        return assembler.toCollectionModel(imageService.getAllImages(productId));
+        return assembler.toCollectionModel(imageService.getAllImages(productId), productId);
     }
 
     @GetMapping("/{productId}/images/{imageId}")
@@ -34,9 +38,13 @@ public class ImageController {
     }
 
     @PostMapping("/{productId}/images")
-    public RepresentationModel<ImageModel> addImage(@PathVariable("productId") Long productId,
+    @ResponseStatus(HttpStatus.CREATED)
+    public RepresentationModel<ImageModel> addImage(HttpServletResponse response,
+                                                    @PathVariable("productId") Long productId,
                                                     @RequestBody ImageModel image) {
-        return assembler.toModel(imageService.addImage(productId, image));
+        RepresentationModel<ImageModel> newImage = assembler.toModel(imageService.addImage(productId, image));
+        response.addHeader(HttpHeaders.LOCATION, newImage.getLink("self").get().getHref());
+        return newImage;
     }
 
     @DeleteMapping("/{productId}/images/{imageId}")
@@ -44,6 +52,5 @@ public class ImageController {
                                                        @PathVariable("imageId") Long imageId) {
         return assembler.toModel(imageService.deleteImage(productId, imageId));
     }
-
 
 }

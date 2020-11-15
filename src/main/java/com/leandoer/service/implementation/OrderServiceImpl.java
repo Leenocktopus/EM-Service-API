@@ -31,8 +31,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderModel addOrder(OrderModel order) {
-	    orderRepository.save(order.toOrder());
-	    return new OrderModel(orderRepository.findById(order.getId()).orElseThrow(RuntimeException::new));
+	    Order newOrder = orderRepository.save(order.toOrder());
+	    order.getProducts().forEach(product -> newOrder.addProduct(product.getProduct().toProduct(), product.getQuantity()));
+	    orderRepository.save(newOrder);
+	    return new OrderModel(orderRepository.findById(newOrder.getId()).orElseThrow(RuntimeException::new));
     }
 
     @Override

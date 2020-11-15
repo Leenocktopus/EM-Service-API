@@ -10,6 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -20,10 +23,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductModel> getAllProducts(Pageable pageable, String searchString) {
-
+    public Page<ProductModel> getAllProducts(Pageable pageable, String searchString, List<Long> categories, List<Long> manufacturers) {
+        // Ugly fix, but will do for now
+        if(categories== null || categories.isEmpty()){
+            categories = Collections.singletonList(1L);
+        }
+        if (manufacturers== null || manufacturers.isEmpty()){
+            manufacturers = Collections.singletonList(1L);
+        }
         return (searchString == null || searchString.isEmpty() ?
-                productRepository.findAll(pageable) : productRepository.findAllByKeyword(pageable, searchString))
+                productRepository.findAll(pageable, categories, manufacturers) : productRepository.findAllByKeyword(pageable, searchString))
                 .map(ProductModel::new);
     }
 

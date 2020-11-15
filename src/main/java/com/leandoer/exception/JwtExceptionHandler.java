@@ -3,6 +3,7 @@ package com.leandoer.exception;
 import com.leandoer.controller.MainController;
 import io.jsonwebtoken.JwtException;
 import org.springframework.hateoas.Link;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -13,10 +14,9 @@ import java.time.ZonedDateTime;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@ControllerAdvice
+@Component
 public class JwtExceptionHandler {
 
-    @ExceptionHandler({JwtException.class})
     public ErrorEntity handleJwtException(JwtException ex, HttpServletRequest request) {
         ErrorEntity e = ErrorEntity.builder()
                 .errorCode(901)

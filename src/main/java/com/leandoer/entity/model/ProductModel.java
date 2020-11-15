@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"links"})
 public class ProductModel extends RepresentationModel<ProductModel> {
     private Long id;
     private String name;

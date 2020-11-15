@@ -46,10 +46,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryModel modifyCategory(long id, CategoryModel category) {
         checkForDuplicate(category);
-        Category selected = categoryRepository.findById(id).orElse(new Category());
-        selected.setName(category.getName());
-
-        return new CategoryModel(categoryRepository.save(selected));
+        category.setId(id);
+        return new CategoryModel(categoryRepository.save(category.toCategory()));
     }
 
     @Override

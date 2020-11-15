@@ -86,7 +86,6 @@ public class ImageServiceImpl implements ImageService {
         if (Files.notExists(path)) {
             Files.createDirectory(path);
         }
-        // Overengineered to gain experience with Predicate/Supplier interfaces
         List<Path> paths = Files.list(path).collect(Collectors.toList());
         Predicate<String> test = value -> {
             for (Path p : paths) {

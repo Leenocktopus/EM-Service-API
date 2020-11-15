@@ -13,7 +13,7 @@ import org.springframework.hateoas.RepresentationModel;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"links"}, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"links"})
 public class ImageModel extends RepresentationModel<ImageModel> {
     private Long id;
     private String filename;

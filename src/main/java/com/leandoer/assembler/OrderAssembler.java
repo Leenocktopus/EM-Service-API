@@ -18,7 +18,8 @@ public class OrderAssembler implements RepresentationModelAssembler<OrderModel, 
     @Override
     public RepresentationModel<OrderModel> toModel(OrderModel order) {
         order.add(
-                linkTo(methodOn(OrderController.class).getOneOrder(order.getId())).withSelfRel()
+		        linkTo(methodOn(OrderController.class).getOneOrder(order.getId())).withSelfRel(),
+		        linkTo(methodOn(OrderController.class).getAllOrders(null, null, null)).withRel("orders").expand()
         );
         return order;
     }

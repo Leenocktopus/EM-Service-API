@@ -2,6 +2,7 @@ package com.leandoer.service.implementation;
 
 import com.leandoer.entity.Product;
 import com.leandoer.entity.ProductComment;
+import com.leandoer.entity.Score;
 import com.leandoer.entity.model.ProductCommentModel;
 import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.repository.ProductCommentRepository;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 
 @Service
 public class ProductCommentServiceImpl implements ProductCommentService {
@@ -28,7 +31,7 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 
     @Override
     public ProductCommentModel addProductComment(long productId, ProductCommentModel comment) {
-        if (productCommentRepository.existsById(comment.getId())) {
+        if (comment.getId()!= null && productCommentRepository.existsById(comment.getId())) {
             throw new RuntimeException();
         }
         Product id = new Product();
@@ -53,7 +56,9 @@ public class ProductCommentServiceImpl implements ProductCommentService {
         System.out.println(selected.getId());
         selected.setUser(comment.getUser());
         selected.setText(comment.getText());
-        selected.setScore(comment.getScore());
+        selected.setScore(Arrays.stream(Score.values())
+                .filter(value -> value.getNumericValue() == comment.getScore())
+                .findFirst().orElseThrow(RuntimeException::new));
         selected.setDate(comment.getDate());
         Product id = new Product();
         id.setId(productId);

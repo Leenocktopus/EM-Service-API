@@ -9,7 +9,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("api/v1/orders")
@@ -24,16 +28,20 @@ public class OrderController {
     }
 
     @GetMapping
-    public CollectionModel<RepresentationModel<OrderModel>> getAllOrders(@PageableDefault Pageable pageable,
-                                                                         PagedResourcesAssembler<OrderModel> pagedResourcesAssembler,
-                                                                         @RequestParam(value = "search", required = false) String searchString) {
-
+    public CollectionModel<RepresentationModel<OrderModel>>
+    getAllOrders(@PageableDefault Pageable pageable,
+                 PagedResourcesAssembler<OrderModel> pagedResourcesAssembler,
+                 @RequestParam(value = "search", required = false) String searchString) {
         return assembler.toCollectionModel(orderService.getAllOrders(pageable, searchString), pagedResourcesAssembler);
     }
 
     @PostMapping
-    public RepresentationModel<OrderModel> add(@RequestBody OrderModel order) {
-        return assembler.toModel(orderService.addOrder(order));
+    @ResponseStatus(HttpStatus.CREATED)
+    public RepresentationModel<OrderModel> add(HttpServletResponse response,
+                                               @RequestBody OrderModel order) {
+        RepresentationModel<OrderModel> newOrder = assembler.toModel(orderService.addOrder(order));
+        response.addHeader(HttpHeaders.LOCATION, newOrder.getLink("self").get().getHref());
+        return newOrder;
     }
 
     @GetMapping("/{id}")
@@ -50,4 +58,5 @@ public class OrderController {
     public RepresentationModel<OrderModel> deleteOrder(@PathVariable("id") Long id) {
         return assembler.toModel(orderService.deleteOrder(id));
     }
+
 }

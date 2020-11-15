@@ -1,9 +1,6 @@
 package com.leandoer.assembler;
 
-import com.leandoer.controller.MainController;
-import com.leandoer.controller.ProductAttributeController;
-import com.leandoer.controller.ProductCommentController;
-import com.leandoer.controller.ProductController;
+import com.leandoer.controller.*;
 import com.leandoer.entity.model.ProductModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -21,17 +18,12 @@ public class ProductAssembler implements RepresentationModelAssembler<ProductMod
     public RepresentationModel<ProductModel> toModel(ProductModel product) {
         product.add(
                 linkTo(methodOn(ProductController.class).getProduct(product.getId())).withSelfRel(),
+                linkTo(methodOn(ProductController.class).getAllProducts(null, null, null, null, null)).withRel("products").expand(),
+                linkTo(methodOn(ImageController.class).getAllImages(product.getId())).withRel("images"),
                 linkTo(methodOn(ProductAttributeController.class).getAllProductAttributes(product.getId())).withRel("attributes"),
                 linkTo(methodOn(ProductCommentController.class).getAllProductComments(product.getId(), null, new PagedResourcesAssembler<>(null, null))).withRel("comments")
         );
         return product;
-    }
-
-    @Override
-    public CollectionModel<RepresentationModel<ProductModel>> toCollectionModel(Iterable<? extends ProductModel> entities) {
-        return RepresentationModelAssembler.super.toCollectionModel(entities).add(
-                linkTo(methodOn(MainController.class).root()).withRel("root")
-        );
     }
 
 
