@@ -6,12 +6,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
@@ -31,17 +33,10 @@ public class Application {
         };
     }
 
+
 }
 /*
 * TODO
-*
-* Possible types of errors:
-* 1. Empty/Extra columns in the request body ||Bad request
-* 2. Not found for put/delete
-* 3. SQL error - value is too long for column, index violation, foreign key fails
-* 4. No such HTTP method
-* 5. No handler found for URL
-*
 * 1. JWT Expired
 * 2. JWT Malformed
 * 3. No cookie for refresh

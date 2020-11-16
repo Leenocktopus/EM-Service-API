@@ -4,6 +4,7 @@ package com.leandoer.entity.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.leandoer.entity.Product;
 import com.leandoer.entity.ProductAttribute;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,9 @@ public class ProductAttributeModel extends RepresentationModel<ProductAttributeM
         productAttribute.setId(id);
         productAttribute.setName(this.name);
         productAttribute.setValue(this.value);
+        Product product = new Product();
+        product.setId(this.productId);
+        productAttribute.setProduct(product);
         return productAttribute;
     }
 }

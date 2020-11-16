@@ -6,6 +6,7 @@ import com.leandoer.exception.EntityConflictException;
 import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.repository.CategoryRepository;
 import com.leandoer.service.CategoryService;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

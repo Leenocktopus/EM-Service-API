@@ -12,4 +12,8 @@ public interface ProductAttributeRepository extends JpaRepository<ProductAttribu
     List<ProductAttribute> findAllByProductId(Long productId);
 
     Optional<ProductAttribute> findByIdAndProductId(Long attributeId, Long productId);
+
+    boolean existsByProductIdAndName(Long productId, String name);
+
+    void deleteProductAttributeByProductId(Long productId);
 }

@@ -9,7 +9,10 @@ import java.sql.Timestamp;
 
 
 @Entity
-@Table(schema = "ecommerce", name = "product_comments")
+@Table(schema = "ecommerce",
+        name = "product_comments",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"prod_id", "user"})})
 @Setter
 @Getter
 @ToString

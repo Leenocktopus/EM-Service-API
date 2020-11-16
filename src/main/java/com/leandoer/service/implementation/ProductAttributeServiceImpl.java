@@ -1,8 +1,8 @@
 package com.leandoer.service.implementation;
 
-import com.leandoer.entity.Product;
 import com.leandoer.entity.ProductAttribute;
 import com.leandoer.entity.model.ProductAttributeModel;
+import com.leandoer.exception.EntityConflictException;
 import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.repository.ProductAttributeRepository;
 import com.leandoer.service.ProductAttributeService;
@@ -31,16 +31,12 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
     @Override
     public ProductAttributeModel addProductAttribute(long productId, ProductAttributeModel attribute) {
-        if (attribute.getId()!=null && productAttributeRepository.existsById(attribute.getId())) {
-            throw new RuntimeException();
-        }
-        Product id = new Product();
-        id.setId(productId);
-        ProductAttribute entity = attribute.toProductAttribute();
-        entity.setProduct(id);
-        productAttributeRepository.save(entity);
-        return attribute;
+        checkForDuplicate(productId, attribute);
+        attribute.setProductId(productId);
+        return new ProductAttributeModel(productAttributeRepository.save(attribute.toProductAttribute()));
     }
+
+
 
     @Override
     public ProductAttributeModel getProductAttribute(long productId, long attributeId) {
@@ -50,17 +46,12 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
                 ));
     }
 
-
     @Override
     public ProductAttributeModel modifyProductAttribute(long productId, long attributeId, ProductAttributeModel attribute) {
-        ProductAttribute selected = productAttributeRepository.findByIdAndProductId(attributeId, productId)
-                .orElse(new ProductAttribute());
-        Product id = new Product();
-        id.setId(productId);
-        selected.setProduct(id);
-        selected.setName(attribute.getName());
-        selected.setValue(attribute.getValue());
-        return new ProductAttributeModel(productAttributeRepository.save(selected));
+        checkForDuplicate(productId, attribute);
+        attribute.setId(attributeId);
+        attribute.setProductId(productId);
+        return new ProductAttributeModel(productAttributeRepository.save(attribute.toProductAttribute()));
     }
 
     @Override
@@ -71,5 +62,11 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
                 );
         productAttributeRepository.delete(productAttribute);
         return new ProductAttributeModel(productAttribute);
+    }
+
+    private void checkForDuplicate(long productId, ProductAttributeModel attribute) {
+        if (productAttributeRepository.existsByProductIdAndName(productId, attribute.getName())) {
+            throw new EntityConflictException("Attribute with name '" + attribute.getName() + "' already exists for product with id: " + productId);
+        }
     }
 }

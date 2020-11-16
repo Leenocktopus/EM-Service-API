@@ -44,9 +44,8 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     @Override
     public ManufacturerModel modifyManufacturer(long id, ManufacturerModel manufacturer) {
         checkForDuplicate(manufacturer);
-        Manufacturer selected = manufacturerRepository.findById(id).orElse(new Manufacturer());
-        selected.setName(manufacturer.getName());
-        return new ManufacturerModel(manufacturerRepository.save(selected));
+        manufacturer.setId(id);
+        return new ManufacturerModel(manufacturerRepository.save(manufacturer.toManufacturer()));
     }
 
     @Override

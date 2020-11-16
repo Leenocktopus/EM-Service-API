@@ -3,7 +3,9 @@ package com.leandoer.service.implementation;
 import com.leandoer.entity.Product;
 import com.leandoer.entity.ProductComment;
 import com.leandoer.entity.Score;
+import com.leandoer.entity.model.ProductAttributeModel;
 import com.leandoer.entity.model.ProductCommentModel;
+import com.leandoer.exception.EntityConflictException;
 import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.repository.ProductCommentRepository;
 import com.leandoer.service.ProductCommentService;
@@ -31,14 +33,9 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 
     @Override
     public ProductCommentModel addProductComment(long productId, ProductCommentModel comment) {
-        if (comment.getId()!= null && productCommentRepository.existsById(comment.getId())) {
-            throw new RuntimeException();
-        }
-        Product id = new Product();
-        id.setId(productId);
-        ProductComment entity = comment.toProductComment();
-        entity.setProduct(id);
-        return new ProductCommentModel(productCommentRepository.save(entity));
+        checkForDuplicate(productId, comment);
+        comment.setProductId(productId);
+        return new ProductCommentModel(productCommentRepository.save(comment.toProductComment()));
     }
 
     @Override
@@ -51,19 +48,10 @@ public class ProductCommentServiceImpl implements ProductCommentService {
 
     @Override
     public ProductCommentModel modifyProductComment(long productId, long commentId, ProductCommentModel comment) {
-        ProductComment selected = productCommentRepository.findByIdAndProductId(commentId, productId)
-                .orElse(new ProductComment());
-        System.out.println(selected.getId());
-        selected.setUser(comment.getUser());
-        selected.setText(comment.getText());
-        selected.setScore(Arrays.stream(Score.values())
-                .filter(value -> value.getNumericValue() == comment.getScore())
-                .findFirst().orElseThrow(RuntimeException::new));
-        selected.setDate(comment.getDate());
-        Product id = new Product();
-        id.setId(productId);
-        selected.setProduct(id);
-        return new ProductCommentModel(productCommentRepository.save(selected));
+        checkForDuplicate(productId, comment);
+        comment.setId(commentId);
+        comment.setProductId(productId);
+        return new ProductCommentModel(productCommentRepository.save(comment.toProductComment()));
     }
 
     @Override
@@ -74,5 +62,11 @@ public class ProductCommentServiceImpl implements ProductCommentService {
                 ));
         productCommentRepository.delete(selected);
         return new ProductCommentModel(selected);
+    }
+
+    private void checkForDuplicate(long productId, ProductCommentModel comment) {
+        if (productCommentRepository.existsByProductIdAndUser(productId, comment.getUser())) {
+            throw new EntityConflictException("Review from user '" + comment.getUser() + "' already exists for product with id: " + productId);
+        }
     }
 }

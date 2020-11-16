@@ -19,8 +19,6 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,29 +80,32 @@ public class ImageServiceImpl implements ImageService {
     }
 
     public String generateFilename(Path path, Long productId) throws IOException {
-
         if (Files.notExists(path)) {
             Files.createDirectory(path);
         }
         List<Path> paths = Files.list(path).collect(Collectors.toList());
-        Predicate<String> test = value -> {
-            for (Path p : paths) {
-                if (p.getFileName().toString().equals(value)) {
-                    return true;
-                }
-            }
-            return false;
-        };
-        Supplier<String> generator = () ->
-                ThreadLocalRandom.current().ints(10, 0, 10)
-                        .boxed().map(String::valueOf).collect(Collectors.joining());
 
-        String generated = generator.get();
-        while (test.test(generated)) {
-            generated = generator.get();
+        String generated = generate();
+        while (checkIfExists(paths, generated)) {
+            generated = generate();
         }
         return generated + ".png";
     }
+
+    private boolean checkIfExists(List<Path> paths, String filename) {
+        for (Path p : paths) {
+            if (p.getFileName().toString().equals(filename)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String generate() {
+        return ThreadLocalRandom.current().ints(10, 0, 10)
+                .boxed().map(String::valueOf).collect(Collectors.joining());
+    }
+
 
     @Override
     public ImageModel deleteImage(Long productId, Long imageId) {

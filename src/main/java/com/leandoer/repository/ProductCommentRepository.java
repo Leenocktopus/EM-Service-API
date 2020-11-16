@@ -12,4 +12,8 @@ public interface ProductCommentRepository extends JpaRepository<ProductComment, 
     Page<ProductComment> findAllByProductId(Long id, Pageable pageable);
 
     Optional<ProductComment> findByIdAndProductId(Long commentId, Long productId);
+
+    boolean existsByProductIdAndUser(Long productId, String user);
+
+    void deleteProductCommentByProductId(Long productId);
 }

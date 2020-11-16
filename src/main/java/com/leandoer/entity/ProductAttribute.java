@@ -7,7 +7,10 @@ import lombok.ToString;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "ecommerce", name = "product_attributes")
+@Table(schema = "ecommerce",
+        name = "product_attributes",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"prod_id", "attribute"})})
 @Setter
 @Getter
 @ToString
