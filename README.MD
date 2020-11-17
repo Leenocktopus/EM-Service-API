@@ -1,6 +1,8 @@
-**Back end for E-commerce project**
+## Back end for E-commerce project
 
-####General
+#### General
+
+
 This is a back end for the rather trite e-commerce website. 
 Initially developed during compulsory internship at my university, 
 this project undergone a number of revisions.
@@ -16,7 +18,7 @@ Front end can be found [here](https://github.com/Leenocktopus/ecommerce-project-
 
 Technologies used: *Spring Boot, Spring Data, JPA/Hibernate, MySQL, Spring Security, JJWT, Spring HATEOAS, Maven, Lombok.*
 
-####Data model
+#### Data model
 The domain knowledge was decomposed into a number of tables, thus providing
 efficient storage for all necessary data and precluding possible anomalies.
 The entity-relationship model is shown down below: 
@@ -24,7 +26,7 @@ The entity-relationship model is shown down below:
 
 ![ERD diagram of the main database](readme_images/main_diagram.png)
 
-####Resources
+#### Resources
 Resources and their uniform locators were developed with best practices in mind
 and can be reviewed in the following table:
 
@@ -46,7 +48,7 @@ and can be reviewed in the following table:
 
 ***Note:** since all URLs have "/api/v1" prefix, it wasn't included in the table*
 
-####JWT Authentication&Authorization
+#### JWT Authentication&Authorization
 Since the final product should feature admin functionality as well as functionality for 
 regular users, there is a need for elaborate authentication and authorization mechanism.  
 The full mechanism of authentication is derived from [Ben Awad's](https://www.youtube.com/watch?v=iD49_NIQ-R4&t=364s) 
@@ -58,7 +60,7 @@ which holds user data and consists of 1 table:
 ![ERD diagram of the user database](readme_images/users_diagram.png)
 
 
-####Hypertext support
+#### Hypertext support
 Hypertext, to my knowledge is far from being widely used in today's APIs.
 Nevertheless, seeing that it would only benefit the final product, I decided to add link relations between resources. 
 The end product is akin to a file system with the [MainController](https://github.com/Leenocktopus/ecommerce-project-API/blob/master/src/main/java/com/leandoer/controller/MainController.java).
