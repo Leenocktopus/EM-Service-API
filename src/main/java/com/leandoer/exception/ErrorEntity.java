@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 
 @Getter
 @Setter
+public
 class ErrorEntity extends RepresentationModel<ErrorEntity> {
     private int errorCode;
     private String errorText;

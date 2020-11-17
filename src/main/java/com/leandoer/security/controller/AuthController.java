@@ -1,5 +1,7 @@
 package com.leandoer.security.controller;
 
+import com.leandoer.exception.NoCookieException;
+import com.leandoer.exception.OldJwtVersionException;
 import com.leandoer.security.data.*;
 import com.leandoer.security.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,15 +60,15 @@ public class AuthController {
     public AuthenticationResponse refresh(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies == null) {
-            throw new RuntimeException("No cookie with refresh token!");
+            throw new NoCookieException("No cookie with refresh token!");
         } else {
             Cookie refreshCookie = Arrays.stream(cookies).filter(cookie -> cookie.getName().equals("shj"))
-                    .findFirst().orElseThrow(() -> new RuntimeException("No cookie with refresh token!"));
+                    .findFirst().orElseThrow(() -> new NoCookieException("No cookie with refresh token!"));
             String refreshToken = refreshCookie.getValue();
             Admin selected = userRepository.getAdminByUsername(jwtRefresh.getUsername(refreshToken))
-                    .orElseThrow(() -> new RuntimeException("No user found for this jwt"));
+                    .orElseThrow(() -> new UsernameNotFoundException("No user found for this jwt"));
             if (Integer.parseInt(jwtRefresh.getVersion(refreshToken)) != selected.getVersion()) {
-                throw new RuntimeException("jwt versions don't match");
+                throw new OldJwtVersionException("Jwt versions don't match");
             }
             JwtAdmin jwtAdmin = new JwtAdmin();
             jwtAdmin.setUsername(jwtRefresh.getUsername(refreshToken));
@@ -83,17 +86,16 @@ public class AuthController {
     public ResponseEntity<?> logout(HttpServletRequest httpServletRequest) {
         Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies == null) {
-            throw new RuntimeException("No cookie with refresh token!");
+            throw new NoCookieException("No cookie with refresh token!");
         } else {
             Cookie refreshCookie = Arrays.stream(cookies).filter(cookie -> cookie.getName().equals("shj"))
-                    .findFirst().orElseThrow(() -> new RuntimeException("No cookie with refresh token!"));
+                    .findFirst().orElseThrow(() -> new NoCookieException("No cookie with refresh token!"));
             String refreshToken = refreshCookie.getValue();
             Admin selected = userRepository.getAdminByUsername(jwtRefresh.getUsername(refreshToken))
-                    .orElseThrow(() -> new RuntimeException("No user found for this jwt"));
+                    .orElseThrow(() -> new UsernameNotFoundException("No user found for this jwt"));
             selected.setVersion(selected.getVersion() + 1);
             userRepository.save(selected);
         }
-
         return ResponseEntity.ok().build();
     }
 

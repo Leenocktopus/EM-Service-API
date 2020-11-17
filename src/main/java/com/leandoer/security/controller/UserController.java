@@ -1,11 +1,9 @@
 package com.leandoer.security.controller;
 
-import com.leandoer.exception.EntityConflictException;
-import com.leandoer.exception.EntityNotFoundException;
 import com.leandoer.security.data.Admin;
 import com.leandoer.security.data.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,7 @@ public class UserController {
     @GetMapping("/users/{username}")
     public Admin getUserById(@PathVariable("username") String username) {
         return userRepository.getAdminByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User with username '" + username + "' has not been found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User with username '" + username + "' has not been found"));
     }
 
 
@@ -31,7 +29,7 @@ public class UserController {
     public Admin changeProfile(@PathVariable("username") String username, @RequestBody Admin admin) {
         Admin user = userRepository
                 .getAdminByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User with username '" + username + "' has not been found."));
+                .orElseThrow(() -> new UsernameNotFoundException("User with username '" + username + "' has not been found."));
         user.setFirstName(admin.getFirstName());
         user.setLastName(admin.getLastName());
         return userRepository.save(user);
@@ -42,7 +40,7 @@ public class UserController {
     public Admin changeEmail(@PathVariable("username") String username, @RequestBody Admin admin) {
         Admin user = userRepository
                 .getAdminByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User with username '" + username + "' has not been found."));
+                .orElseThrow(() -> new UsernameNotFoundException("User with username '" + username + "' has not been found."));
         user.setEmail(admin.getEmail());
         return userRepository.save(user);
     }
@@ -51,7 +49,7 @@ public class UserController {
     public Admin changePassword(@PathVariable("username") String username, @RequestBody Admin admin, @RequestParam("old") String oldPassword) {
         Admin user = userRepository
                 .getAdminByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User with username '" + username + "' has not been found."));
+                .orElseThrow(() -> new UsernameNotFoundException("User with username '" + username + "' has not been found."));
         if (!passwordEncoder.matches(admin.getPassword(), user.getPassword())) {
             if (passwordEncoder.matches(oldPassword, user.getPassword())){
                 user.setVersion(user.getVersion() + 1);
@@ -70,7 +68,7 @@ public class UserController {
     public Admin changeUsername(@PathVariable("username") String username, @RequestBody Admin admin) {
         Admin user = userRepository
                 .getAdminByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User with username '" + username + "' has not been found."));
+                .orElseThrow(() -> new UsernameNotFoundException("User with username '" + username + "' has not been found."));
         if (!user.getUsername().equals(admin.getUsername())) {
             if (userRepository.existsByUsername(admin.getUsername())) {
                 throw new RuntimeException("Can't change user, there is already a user with name '" + admin.getUsername() + "'.");

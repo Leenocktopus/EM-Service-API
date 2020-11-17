@@ -4,3 +4,4 @@ static/images/*
 *.iml
 src/main/resources/sql
 src/test/
+src/main/resources/security.properties
