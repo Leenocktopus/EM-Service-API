@@ -54,56 +54,55 @@ public class ImageServiceImpl implements ImageService {
         Product product = new Product();
         product.setId(productId);
         newImage.setProduct(product);
-        byte[] decodedImage = Base64.getDecoder().decode(image.getEncodedImage().getBytes(StandardCharsets.UTF_8));
-
-        String classpath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().substring(1);
-        classpath = new File(classpath).getParentFile().getParentFile().getPath();
-        String relativePath = "/static/images/";
-        String dirName = String.valueOf(productId);
-        Path path = Paths.get(classpath + relativePath + dirName);
-
-        String filename = null;
         try {
-            filename = generateFilename(path, productId);
+            newImage.setFilename(saveImageAsResource(productId, image.getEncodedImage()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        newImage.setFilename(filename);
-
-        ImageModel result = new ImageModel(imageRepository.save(newImage));
-        try {
-            Files.write(Paths.get(path.toString() + "/" + filename), decodedImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
+        return new ImageModel(imageRepository.save(newImage));
     }
 
-    public String generateFilename(Path path, Long productId) throws IOException {
+
+    private String saveImageAsResource(Long productId, String encodedImage) throws IOException{
+        Path path = generatePath(productId);
+        createDirectoryIfNotExists(path);
+        String filename = generateFilename(path);
+        Files.write(path.resolve(filename),
+                Base64.getDecoder().decode(encodedImage.getBytes(StandardCharsets.UTF_8)));
+        return filename;
+    }
+
+    private Path generatePath(Long productId){
+        File jarPath = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().substring(1));
+        return Paths.get(
+                new File( jarPath.getParentFile().getParentFile().getPath(), "/static/images/").getPath(),
+                String.valueOf(productId));
+    }
+    private void createDirectoryIfNotExists(Path path) throws IOException{
         if (Files.notExists(path)) {
             Files.createDirectory(path);
         }
+    }
+    private String generateFilename(Path path) throws IOException {
         List<Path> paths = Files.list(path).collect(Collectors.toList());
-
-        String generated = generate();
-        while (checkIfExists(paths, generated)) {
-            generated = generate();
+        String generated = generateRandomName();
+        while (checkIfFileExists(paths, generated)) {
+            generated = generateRandomName();
         }
         return generated + ".png";
     }
 
-    private boolean checkIfExists(List<Path> paths, String filename) {
+    private String generateRandomName() {
+        return ThreadLocalRandom.current().ints(10, 0, 10)
+                .boxed().map(String::valueOf).collect(Collectors.joining());
+    }
+    private boolean checkIfFileExists(List<Path> paths, String filename) {
         for (Path p : paths) {
             if (p.getFileName().toString().equals(filename)) {
                 return true;
             }
         }
         return false;
-    }
-
-    private String generate() {
-        return ThreadLocalRandom.current().ints(10, 0, 10)
-                .boxed().map(String::valueOf).collect(Collectors.joining());
     }
 
 
